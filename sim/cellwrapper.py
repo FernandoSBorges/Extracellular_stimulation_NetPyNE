@@ -28,7 +28,34 @@ def loadCell2(hocName, MorphoName):
 
     return cell
 
+
 def loadCell3(cellName, cellTemplateName):
+    origDir = os.getcwd()
+    os.chdir('cells/'+cellName+'/')
+    h.load_file("stdrun.hoc")
+    h.load_file('import3d.hoc')
+    try:
+        h.xopen("morphology.hoc")
+    except:
+        pass
+    try:
+        h.xopen("biophysics.hoc")
+    except:
+        pass
+    try:
+        h.xopen("synapses/synapses.hoc")
+    except:
+        pass
+    h.xopen('template.hoc')
+    
+    cell = getattr(h, cellTemplateName)(0)
+    
+    os.chdir(origDir)
+    
+    return cell
+
+
+def loadCell4(cellName, cellTemplateName):
     os.chdir('cell_data/'+cellName+'/')
     h.load_file("stdrun.hoc")
     h.load_file("import3d.hoc")    

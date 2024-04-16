@@ -114,7 +114,7 @@ proc geom_nseg() { local secIndex, chunkSize
 /** Initialise biophysics */                                                                             
 proc biophys() {localobj bp
     // Replace the axon with a stub axon
-    replace_axon()
+    // replace_axon()
     
     // Initialise distance function to soma
     access soma

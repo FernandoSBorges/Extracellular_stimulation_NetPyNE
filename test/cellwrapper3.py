@@ -7,6 +7,7 @@ def loadCell(cellName, cellTemplateName):
     h.load_file("stdrun.hoc")
     h.load_file("import3d.hoc")    
     h.load_file("template.hoc")
+    # h.xopen('template.hoc')
     # Instantiate the cell from the template
     
     add_synapses=False    
