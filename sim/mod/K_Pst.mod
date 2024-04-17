@@ -2,7 +2,7 @@
 :Reference : :		Voltage-gated K+ channels in layer 5 neocortical pyramidal neurones from young rats:subtypes and gradients,Korngreen and Sakmann, J. Physiology, 2000
 :Comment : shifted -10 mv to correct for junction potential
 :Comment: corrected rates using q10 = 2.3, target temperature 34, orginal 21
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra** 
+
 
 NEURON	{
 	SUFFIX K_Pst
@@ -56,8 +56,7 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-  :qt = 2.3^((34-21)/10)
-  qt = 2.3^((celsius-21)/10)	
+  qt = 2.3^((34-21)/10)
 	UNITSOFF
 		v = v + 10
 		mInf =  (1/(1 + exp(-(v+1)/12)))

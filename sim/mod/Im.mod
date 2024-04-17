@@ -1,6 +1,6 @@
 :Reference : :		Adams et al. 1982 - M-currents and other potassium currents in bullfrog sympathetic neurones
 :Comment: corrected rates using q10 = 2.3, target temperature 34, orginal 21
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra**
+
 NEURON	{
 	SUFFIX Im
 	USEION k READ ek WRITE ik
@@ -50,8 +50,8 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-  :qt = 2.3^((34-21)/10)
-  qt = 2.3^((celsius-21)/10)	
+  qt = 2.3^((34-21)/10)
+
 	UNITSOFF
 		mAlpha = 3.3e-3*exp(2.5*0.04*(v - -35))
 		mBeta = 3.3e-3*exp(-2.5*0.04*(v - -35))

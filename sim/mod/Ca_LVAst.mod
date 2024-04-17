@@ -2,7 +2,7 @@
 :Reference : :		Avery and Johnston 1996, tau from Randall 1997
 :Comment: shifted by -10 mv to correct for junction potential
 :Comment: corrected rates using q10 = 2.3, target temperature 34, orginal 21
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra**
+
 NEURON	{
 	SUFFIX Ca_LVAst
 	USEION ca READ eca WRITE ica
@@ -55,8 +55,8 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-	:qt = 2.3^((34-21)/10)
-	qt = 2.3^((celsius-21)/10)	
+  qt = 2.3^((34-21)/10)
+
 	UNITSOFF
 		v = v + 10
 		mInf = 1.0000/(1+ exp((v - -30.000)/-6))

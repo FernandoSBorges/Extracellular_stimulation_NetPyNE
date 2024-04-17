@@ -2,7 +2,7 @@
 :Comment : so I used the equations from NaT and multiplied by 6
 :Reference : Modeled according to kinetics derived from Magistretti & Alonso 1999
 :Comment: corrected rates using q10 = 2.3, target temperature 34, orginal 21
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra**
+
 NEURON	{
 	SUFFIX Nap_Et2
 	USEION na READ ena WRITE ina
@@ -59,8 +59,8 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-  :qt = 2.3^((34-21)/10)
-  qt = 2.3^((celsius-21)/10)	
+  qt = 2.3^((34-21)/10)
+
 	UNITSOFF
 		mInf = 1.0/(1+exp((v- -52.6)/-4.6))
     if(v == -38){

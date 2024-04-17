@@ -1,5 +1,5 @@
 :Reference :Colbert and Pan 2002
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra**
+
 NEURON	{
 	SUFFIX NaTa_t
 	USEION na READ ena WRITE ina
@@ -56,8 +56,8 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-  :qt = 2.3^((34-21)/10)
-  qt = 2.3^((celsius-21)/10)		
+  qt = 2.3^((34-21)/10)
+	
   UNITSOFF
     if(v == -38){
     	v = v+0.0001

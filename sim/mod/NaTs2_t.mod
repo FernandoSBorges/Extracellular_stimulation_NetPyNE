@@ -1,6 +1,6 @@
 :Reference :Colbert and Pan 2002
 :comment: took the NaTa and shifted both activation/inactivation by 6 mv
-: **Modified to use 'celsius' for temperature to correct rates by Aman Aberra**
+
 NEURON	{
 	SUFFIX NaTs2_t
 	USEION na READ ena WRITE ina
@@ -57,8 +57,8 @@ INITIAL{
 
 PROCEDURE rates(){
   LOCAL qt
-  :qt = 2.3^((34-21)/10)
-  qt = 2.3^((celsius-21)/10)	
+  qt = 2.3^((34-21)/10)
+
 	UNITSOFF
     if(v == -32){
     	v = v+0.0001
