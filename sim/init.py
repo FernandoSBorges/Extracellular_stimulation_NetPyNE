@@ -113,7 +113,9 @@ def insert_v_ext(self, v_ext, t_ext):
     i = 0
     for secName, sec in self.secs.items(): 
         # print(secName,i)
-        self.v_ext[i].play(sec['hObj'](0.5)._ref_e_extracellular, self.t_ext)
+        for seg in sec['hObj']:
+                self.v_ext[i].play(seg._ref_e_extracellular, self.t_ext)
+            # self.v_ext[i].play(sec['hObj'](0.5)._ref_e_extracellular, self.t_ext)
         i += 1
   
 def make_extracellular_stimuli(acs_params, self, secList):
