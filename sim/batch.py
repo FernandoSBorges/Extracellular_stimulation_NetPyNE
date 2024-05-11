@@ -44,13 +44,13 @@ def setRunCfg(b, type='mpi_bulletin'):
             'mpiCommand': 'mpirun -n 80 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
             'skip': True}
             
------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Main code
 # ----------------------------------------------------------------------------------------------
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch2'  
+    b.batchLabel = 'v1_batch1'  
     b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
     setRunCfg(b, 'mpi_direct')

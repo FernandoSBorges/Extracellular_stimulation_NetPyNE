@@ -33,8 +33,9 @@ netParams.scale = cfg.scale # Scale factor for number of cells
 netParams.sizeX = cfg.sizeX # x-dimension (horizontal length) size in um
 netParams.sizeY = cfg.sizeY # y-dimension (vertical height or cortical depth) size in um
 netParams.sizeZ = cfg.sizeZ # z-dimension (horizontal depth) size in um
-netParams.shape = 'cylinder' # cylindrical (column-like) volume
-   
+netParams.shape = 'cylinder' # cylindrical (column-like) volume   
+netParams.rotateCellsRandomly = [0, 6.2832]
+
 # Layer	height (um)	height (norma)	from	to
 # L1	165		    0.079		    0.000	0.079
 # L2	149		    0.072		    0.079	0.151
@@ -183,19 +184,6 @@ for cellName in cfg.S1cells:
                 if 'ca' in netParams.cellParams[cellMe]['secs'][section]['ions'].keys():
                     netParams.cellParams[cellMe]['secs'][section]['ions']['ca']['o'] = cfg.cao_secs      
                     
-            randRotationAngle = 2.0*np.pi*np.random.rand() # np.pi/2.0  # rand.uniform(0, 6.2832)  #    
-        
-            #  Rotate the cell about the Z axis
-            for ipt, pt3d in enumerate(netParams.cellParams[cellMe]['secs'][section]['geom']['pt3d']):                
-                x = pt3d[0]             
-                y = pt3d[1]
-                z = pt3d[2]
-                d = pt3d[3]
-                c = np.cos(randRotationAngle)
-                s = np.sin(randRotationAngle)        
-
-                netParams.cellParams[cellMe]['secs'][section]['geom']['pt3d'][ipt] = (x * c - z * s, y, x * s + z * c, d)
-
 # #------------------------------------------------------------------------------
 # #  extracellular mechs
 # #------------------------------------------------------------------------------

@@ -114,8 +114,7 @@ def insert_v_ext(self, v_ext, t_ext):
     for secName, sec in self.secs.items(): 
         # print(secName,i)
         for seg in sec['hObj']:
-                self.v_ext[i].play(seg._ref_e_extracellular, self.t_ext)
-            # self.v_ext[i].play(sec['hObj'](0.5)._ref_e_extracellular, self.t_ext)
+            self.v_ext[i].play(seg._ref_e_extracellular, self.t_ext)
         i += 1
   
 def make_extracellular_stimuli(acs_params, self, secList):
@@ -148,9 +147,9 @@ def make_extracellular_stimuli(acs_params, self, secList):
 
 # The parameters of the extracellular point current source
 acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
-              'amp': 50.,  # uA,
-              'stimstart': 300,  # ms
-              'stimend': 900,  # ms
+              'amp': 250.,  # uA,
+              'stimstart': 1000,  # ms
+              'stimend': 3000,  # ms
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
