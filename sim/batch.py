@@ -34,7 +34,7 @@ def setRunCfg(b, type='mpi_bulletin'):
 
     elif type=='mpi_direct':
         b.runCfg = {'type': 'mpi_direct',
-            'cores': 12,
+            'cores': 6,
             'script': 'init.py',
             'mpiCommand': 'mpiexec', # --use-hwthread-cpus
             'skip': True}
@@ -43,8 +43,36 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'mpi_direct',
             'mpiCommand': 'mpirun -n 80 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
             'skip': True}
-            
-# -----------------------------------------------------------------------------
+
+    elif type == 'hpc_slurm_Expanse_debug':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'debug',
+                    'walltime': '1:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 4,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/Extracellular_stimulation_NetPyNE/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=249325M\n#SBATCH --export=ALL\n#SBATCH --partition=debug',
+                    'skip': True}
+
+    elif type == 'hpc_slurm_Expanse':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'TG-IBN140002',
+                    'partition': 'large-shared',
+                    'walltime': '2:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 128,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/home/fborges/Extracellular_stimulation_NetPyNE/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=512G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
+                    'skip': True}
+
+# ----------------------------------------------------------------------------------------------
 # Main code
 # ----------------------------------------------------------------------------------------------
 if __name__ == '__main__': 
@@ -55,3 +83,4 @@ if __name__ == '__main__':
     b.method = 'grid'
     setRunCfg(b, 'mpi_direct')
     b.run() # run batch
+     

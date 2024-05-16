@@ -147,9 +147,9 @@ def make_extracellular_stimuli(acs_params, self, secList):
 
 # The parameters of the extracellular point current source
 acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
-              'amp': 250.,  # uA,
+              'amp': 400.,  # uA,
               'stimstart': 1000,  # ms
-              'stimend': 3000,  # ms
+              'stimend': 1500,  # ms
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
@@ -166,12 +166,16 @@ for c,metype in enumerate(sim.net.cells):
 
 
 sim.runSim()                      			# run parallel Neuron simulation  
-sim.gatherData()                  			# gather spiking data and cell info from each node
+# Gather/save data option 1: standard
+sim.gatherData()                 			# gather spiking data and cell info from each node
+# Gather/save data option 2: distributed saving across nodes 
+# sim.saveDataInNodes()
+# sim.gatherDataFromFiles()
 sim.saveData()                    			# save params, cell info and sim output to file (pickle,mat,txt,etc)#
 sim.analysis.plotData()         			# plot spike raster etc
 
 
-# sim.analysis.plotRaster(include=cfg.recordCells, timeRange=[0,cfg.duration], orderBy='gid', orderInverse=True, labels=None, popRates=False, lw=5, marker='.', markerSize=15, figSize=(18, 12), fontSize=9, dpi=300, saveFig='../data/'+cfg.simLabel[0:9]+'/'+cfg.simLabel + '_Raster_onecellperpop.png', showFig=False)
+# sim.analysis.plotRaster(include=cfg.S1cells, timeRange=[1000,cfg.duration], orderBy='gid', orderInverse=True, figSize=(18, 12), fontSize=9, dpi=300, saveFig=True, showFig=False)
 # sim.analysis.plotRaster(timeRange=[0,cfg.duration], orderBy='gid', orderInverse=True, labels=None, popRates=False, lw=1, marker='.', markerSize=2, figSize=(18, 12), fontSize=9, dpi=300, saveFig=True, showFig=False)
 # sim.analysis.plotTraces(include=cfg.recordCells, overlay=True, oneFigPer='cell', figSize=(12, 4), fontSize=7, saveFig=True)
 #sim.analysis.plotTraces(include=cfg.recordCells, overlay=False, oneFigPer='trace', figSize=(18, 12), fontSize=9, saveFig=True)

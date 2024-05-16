@@ -25,7 +25,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 5.0*1e3 ## Duration of the sim, in ms  
+cfg.duration = 2.0*1e3 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'conn': 4322, 'stim': 1001, 'loc': 4322} 
 cfg.hParams = {'celsius': 34, 'v_init': -69.5}  
@@ -194,7 +194,7 @@ cfg.cellParamLabels = cfg.S1cells
 # Recording 
 #--------------------------------------------------------------------------
 cfg.allpops = cfg.cellParamLabels
-cfg.cellsrec = 0
+cfg.cellsrec = 1
 if cfg.cellsrec == 0:  cfg.recordCells = cfg.allpops # record all cells
 elif cfg.cellsrec == 1: cfg.recordCells = [(pop,0) for pop in cfg.allpops] # record one cell of each pop
 elif cfg.cellsrec == 2: # record one cell of each cellMEtype # need more test!!!
@@ -216,8 +216,6 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype # need more test!!!
                     numberME+=int(cfg.cellNumber[metype]/5.0)
 
 cfg.recordTraces = {'V_soma': {'sec':'soma', 'loc':0.5, 'var':'v'},
-			'V_dend_1': {'sec':'dend_1', 'loc':0.5, 'var':'v'},
-			'V_axon_1': {'sec':'axon_1', 'loc':0.5, 'var':'v'},
 			}  ## Dict with traces to record
 cfg.recordStim = False			
 cfg.recordTime = False  		
@@ -236,21 +234,21 @@ if cfg.recordDipole: cfg.saveDipoleCells = cfg.S1cells
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'v1_batch0'       #   + str(cfg.cynradNumber)
+cfg.simLabel = 'v1_batch1'       #   + str(cfg.cynradNumber)
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True	        	## Save pkl file
-cfg.saveJson = False           	## Save json file
-cfg.saveDataInclude = ['simData'] ## ['simData', 'simConfig', 'net', 'netParams'] ## ['simData'] ##  , , 'simConfig', 'netParams'
+cfg.saveJson = True           	## Save json file
+cfg.saveDataInclude = ['simData'] ## ['simData', 'simConfig', 'net', 'netParams'] ##  , , 'simConfig', 'netParams'
 cfg.backupCfgFile = None 		##  
-cfg.gatherOnlySimData = False	##  
+cfg.gatherOnlySimData = True	##  
 cfg.saveCellSecs = False			
 cfg.saveCellConns = False	
 
 #------------------------------------------------------------------------------
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
-cfg.analysis['plotRaster'] = {'include': cfg.S1cells, 'saveFig': True, 'showFig': False,'orderInverse': True, 'timeRange': [1000,cfg.duration], 'figSize': (18,18), 'fontSize':4, 'markerSize':4, 'marker': 'o', 'dpi': 300} 
+cfg.analysis['plotRaster'] = {'include': cfg.S1cells, 'saveFig': True, 'showFig': False,'orderInverse': True, 'timeRange': [1000,cfg.duration], 'figSize': (24,18), 'fontSize':4, 'markerSize':4, 'marker': 'o', 'dpi': 300} 
 # cfg.analysis['plot2Dnet']   = {'include': ['presyn_L23_PC_cAD','presyn_L5_TTPC2_cAD', 'presyn_VPM_sTC','L23_PC_cAD','L5_TTPC2_cAD'],'saveFig': True, 'showConns': False, 'figSize': (24,24), 'view': 'xz', 'fontSize':16}   # Plot 2D cells xy
 cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', 'overlay': True, 'timeRange': [1000,cfg.duration], 'saveFig': True, 'showFig': False, 'figSize':(12,6)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
