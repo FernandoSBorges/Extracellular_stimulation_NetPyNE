@@ -1,5 +1,6 @@
 from neuron import h
 import os
+import sys
 
 def loadCell(cellName, cellTemplateName):
     origDir = os.getcwd()
@@ -17,6 +18,30 @@ def loadCell(cellName, cellTemplateName):
     
     return cell
     
+def loadCell_Net(cellName, cellTemplateName):
+    origDir = os.getcwd()
+    os.chdir('WeiseEtAl2023/cells/'+cellName+'/')
+    h.load_file("stdrun.hoc")
+    h.load_file('import3d.hoc')
+    try:
+        h.xopen("morphology.hoc")
+    except:
+        pass
+    try:
+        h.xopen("biophysics.hoc")
+    except:
+        pass
+    try:
+        h.xopen("synapses/synapses.hoc")
+    except:
+        pass
+    h.xopen('template.hoc')
+    cell = getattr(h, cellTemplateName)(0)
+    
+    print (cell)
+    os.chdir(origDir)
+    return cell
+
 # from neuron import h
 # import os
 
