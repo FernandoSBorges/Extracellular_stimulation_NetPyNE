@@ -34,7 +34,7 @@ def setRunCfg(b, type='mpi_bulletin'):
 
     elif type=='mpi_direct':
         b.runCfg = {'type': 'mpi_direct',
-            'cores': 6,
+            'cores': 10,
             'script': 'init.py',
             'mpiCommand': 'mpiexec', # --use-hwthread-cpus
             'skip': True}
@@ -62,7 +62,7 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '2:00:00',
+                    'walltime': '12:00:00',
                     'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',

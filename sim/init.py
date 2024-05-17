@@ -17,6 +17,7 @@ from netpyne import sim
 import neuron
 import pickle, json
 import numpy as np
+import os
 
 
 # cfg, netParams = sim.readCmdLineArgs(simConfigDefault='cfg.py', netParamsDefault='netParams.py')
@@ -149,7 +150,7 @@ def make_extracellular_stimuli(acs_params, self, secList):
 acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
               'amp': 400.,  # uA,
               'stimstart': 1000,  # ms
-              'stimend': 1500,  # ms
+              'stimend': 3000,  # ms
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
@@ -167,12 +168,25 @@ for c,metype in enumerate(sim.net.cells):
 
 sim.runSim()                      			# run parallel Neuron simulation  
 # Gather/save data option 1: standard
-sim.gatherData()                 			# gather spiking data and cell info from each node
+# sim.gatherData()                 			# gather spiking data and cell info from each node
 # Gather/save data option 2: distributed saving across nodes 
-# sim.saveDataInNodes()
-# sim.gatherDataFromFiles()
-sim.saveData()                    			# save params, cell info and sim output to file (pickle,mat,txt,etc)#
+sim.saveDataInNodes()
+sim.gatherDataFromFiles()
 sim.analysis.plotData()         			# plot spike raster etc
+
+if sim.rank == 0:
+    file_path = cfg.saveFolder+'/'+cfg.simLabel+'_node_data'
+    print(file_path)
+
+    if os.path.exists(file_path):
+        print("The files exist")
+        filelist = os.listdir(file_path)
+        for f in filelist:
+            os.remove(os.path.join(file_path, f))
+            print(f"The file {f} has been deleted.")
+    
+sim.saveData()                    			# save params, cell info and sim output to file (pickle,mat,txt,etc)#
+# sim.analysis.plotData()         			# plot spike raster etc
 
 
 # sim.analysis.plotRaster(include=cfg.S1cells, timeRange=[1000,cfg.duration], orderBy='gid', orderInverse=True, figSize=(18, 12), fontSize=9, dpi=300, saveFig=True, showFig=False)
