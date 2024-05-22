@@ -25,7 +25,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 5.0*1e3 ## Duration of the sim, in ms  
+cfg.duration = 3.0*1e3 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'conn': 4322, 'stim': 1001, 'loc': 4322} 
 cfg.hParams = {'celsius': 34, 'v_init': -69.5}  
@@ -125,7 +125,7 @@ for cellLabel in spkTimes.keys():
 
 #------------------------------------------------------------------------------
 cfg.cynradNumber = 1
-cfg.fracmorphoradius = 1.0/3.333
+cfg.fracmorphoradius = 1.0/2.0
 
 excluderadius2a = (cfg.cynradNumber-1)*(0.5*cfg.fracmorphoradius)**2
 excluderadius2b = (cfg.cynradNumber)*(0.5*cfg.fracmorphoradius)**2
@@ -239,7 +239,7 @@ cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True	        	## Save pkl file
 cfg.saveJson = False           	## Save json file
-cfg.saveDataInclude = ['simData', 'simConfig', 'net', 'netParams'] ##  , , 'simConfig', 'netParams'
+cfg.saveDataInclude = ['simData'] ##['simData', 'simConfig', 'net', 'netParams'] ##  , , 'simConfig', 'netParams'
 cfg.backupCfgFile = None 		##  
 cfg.gatherOnlySimData = False	##  
 cfg.saveCellSecs = False			
@@ -286,7 +286,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = True
+cfg.addConn = False
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -299,7 +299,7 @@ cfg.IEGain = 1.0
 
 #-----------------------------------------------------------------------------
 ## Th->S1
-cfg.connect_ThVecStim_S1 = True
+cfg.connect_ThVecStim_S1 = False
 
 cfg.TC_S1 = {}
 cfg.TC_S1['VPL_sTC'] = True

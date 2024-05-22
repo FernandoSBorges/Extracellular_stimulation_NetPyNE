@@ -78,8 +78,8 @@ if __name__ == '__main__':
     dataType = 'spont' #'speech' #'spont'
 
     if dataType == 'spont':
-        filenames = ['../data/v1_batch0/v1_batch0_data.pkl']
-        timeRange = [1000, 2000]
+        filenames = ['../data/v1_batch1/v1_batch1_0_data.pkl']
+        timeRange = [1000, 3000]
 
     layer_bounds= {'1':[0.0, 0.079], '2': [0.079,0.151], '3': [0.151,0.320], '23': [0.079,0.320], '4':[0.320,0.412], '5': [0.412,0.664], '6': [0.664,1.0]}
 
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     for filename in filenames:
 
-        sim.load(filename, instantiate=True, instantiateConns = False, instantiateStims = False, instantiateRxD = False, createNEURONObj = False)
+        sim.load(filename, instantiate=False, instantiateConns = False, instantiateStims = False, instantiateRxD = False, createNEURONObj = False)
 
         # standardd plots
         # sim.analysis.plotRaster(**{'include': ['allCells'], 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (48,36), 'fontSize':4, 'lw': 2, 'markerSize':2, 'marker': '.', 'dpi': 300})
@@ -98,35 +98,5 @@ if __name__ == '__main__':
         #sim.analysis.plotSpikeStats(stats=['rate'],figSize = (6,12), timeRange=[1500, 6500], dpi=300, showFig=0, saveFig=filename[:-4]+'_stats_5sec')
         #sim.analysis.plotLFP(**{'plots': ['spectrogram'], 'electrodes': ['avg', [0], [1], [2,3,4,5,6,7,8,9], [10, 11, 12], [13], [14, 15], [16,17,18,19]], 'timeRange': timeRange, 'maxFreq': 50, 'figSize': (8,24), 'saveData': False, 'saveFig': filename[:-4]+'_LFP_spec_7s_all_elecs', 'showFig': False})
 
-        sim.analysis.plotRaster(**{'include': S1cells, 'saveFig': True, 'showFig': False, 'labels': None, 'popRates': False,'orderInverse': True, 'timeRange': timeRange, 'figSize': (36,24), 'fontSize':4, 'lw': 5, 'markerSize':10, 'marker': '.', 'dpi': 300})
-        
-        # sim.analysis.plotLFP(**{'plots': ['locations'], 
-        #         'figSize': (24,24), 
-        #         'saveData': False, 
-        #         'saveFig': True, 'showFig': False, 'dpi': 300})
+        sim.analysis.plotRaster(**{'include': cfg.S1cells, 'saveFig': True, 'showFig': False,'orderInverse': True, 'timeRange': [1000,3000], 'figSize': (24,18), 'fontSize':4, 'markerSize':4, 'marker': 'o', 'dpi': 300})
 
-        sim.analysis.plotLFP(**{'plots': ['timeSeries'], 
-                # 'electrodes': 
-                # [[0,1,2,3]], #'avg', 
-                'timeRange': timeRange, 
-                'figSize': (24,12), 'saveFig': True, 'showFig': False})
-
-        sim.analysis.plotLFP(**{'plots': ['spectrogram'], 
-                # 'electrodes': 
-                # [[0,1,2,3]],
-                'timeRange': timeRange, 
-                'minFreq': 100, 
-                'maxFreq': 500, 
-                'figSize': (16,12), 
-                'saveData': False, 
-                'saveFig': True, 'showFig': False})
-
-        sim.analysis.plotLFP(**{'plots': ['PSD'], 
-                # 'electrodes': 
-                # [[0,1,2,3]],
-                'timeRange': timeRange, 
-                'minFreq': 100, 
-                'maxFreq': 500, 
-                'figSize': (8,12), 
-                'saveData': False, 
-                'saveFig': True, 'showFig': False})

@@ -62,14 +62,27 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '12:00:00',
+                    'walltime': '9:00:00',
                     'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
                     'folder': '/home/fborges/Extracellular_stimulation_NetPyNE/sim/',
                     'script': 'init.py',
                     'mpiCommand': 'mpirun',
-                    'custom': '#SBATCH --mem=512G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
+                    'custom': '#SBATCH --constraint="lustre"\n#SBATCH --mem=2055638M\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
+                    'skip': True}
+
+    elif type == 'hpc_slurm_jsc':
+        b.runCfg = {'type': 'hpc_slurm',
+                    'allocation': 'icei-hbp-00000000006',
+                    'walltime': '9:00:00',
+                    'nodes': 1,
+                    'coresPerNode': 128,
+                    'email': 'fernandodasilvaborges@gmail.com',
+                    'folder': '/p/home/jusers/borges1/jusuf/Extracellular_stimulation_NetPyNE/sim/',
+                    'script': 'init.py',
+                    'mpiCommand': 'mpirun',
+                    'custom': '#SBATCH --mem=256G\n#SBATCH --account=icei-hbp-00000000006',
                     'skip': True}
 
 # ----------------------------------------------------------------------------------------------
@@ -78,9 +91,10 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch1'  
-    b.saveFolder = '../data/'+b.batchLabel
+    b.batchLabel = 'v0_batch1'  
+    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    b.saveFolder = '$PROJECT/borges1/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'mpi_direct')
+    setRunCfg(b, 'hpc_slurm_jsc')
     b.run() # run batch
      
