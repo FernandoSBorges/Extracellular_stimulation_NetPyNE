@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     b.batchLabel = 'v0_batch1'  
     # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
-    b.saveFolder = '$PROJECT/borges1/'+b.batchLabel
+    b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
     b.method = 'grid'
     setRunCfg(b, 'hpc_slurm_jsc')
     b.run() # run batch

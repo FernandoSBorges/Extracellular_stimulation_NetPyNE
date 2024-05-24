@@ -286,7 +286,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = False
+cfg.addConn = True
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -299,7 +299,7 @@ cfg.IEGain = 1.0
 
 #-----------------------------------------------------------------------------
 ## Th->S1
-cfg.connect_ThVecStim_S1 = False
+cfg.connect_ThVecStim_S1 = True
 
 cfg.TC_S1 = {}
 cfg.TC_S1['VPL_sTC'] = True
