@@ -28,6 +28,37 @@ sim.initialize(
     netParams = netParams)  				# create network object and set cfg and net params
 sim.net.createPops()               			# instantiate network populations
 sim.net.createCells()              			# instantiate network cells based on defined populations
+
+## Load cells positions
+with open('cells/spkTimes_v9_batch8_highgsynCT.pkl', 'rb') as fileObj: simData = pickle.load(fileObj)
+
+cellsTags = simData['cellsTags']
+
+# print(sim.rank,sim.net.cells[0].tags)
+
+for i,metype in enumerate(sim.net.cells):
+
+    if 'presyn' in metype.tags['pop']:
+        ii = int(metype.tags['cellLabel'])        
+        metype.tags['xnorm'] = cellsTags[ii]['xnorm']
+        metype.tags['ynorm'] = cellsTags[ii]['ynorm']
+        metype.tags['znorm'] = cellsTags[ii]['znorm']
+        metype.tags['x'] = cellsTags[ii]['x']
+        metype.tags['y'] = cellsTags[ii]['y']
+        metype.tags['z'] = cellsTags[ii]['z']   
+
+    else:
+        ii2 = int(0.000001+(metype.tags['fraction']/(1/cfg.Nmorpho[metype.tags['pop']])))  
+
+        ii = cfg.listmorphonumber[metype.tags['pop']][ii2]
+
+        metype.tags['xnorm'] = cellsTags[ii]['xnorm']
+        metype.tags['ynorm'] = cellsTags[ii]['ynorm']
+        metype.tags['znorm'] = cellsTags[ii]['znorm']
+        metype.tags['x'] = cellsTags[ii]['x']
+        metype.tags['y'] = cellsTags[ii]['y']
+        metype.tags['z'] = cellsTags[ii]['z']   
+
 sim.net.connectCells()            			# create connections between cells based on params
 sim.net.addStims() 							# add network stimulation
 sim.setupRecording()              			# setup variables to record for each cell (spikes, V traces, etc)
@@ -118,8 +149,8 @@ def make_extracellular_stimuli(acs_params, self, secList):
 # The parameters of the extracellular point current source
 acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
               'amp': 400.,  # uA,
-              'stimstart': 300,  # ms
-              'stimend': 500,  # ms
+              'stimstart': 1000,  # ms
+              'stimend': 2000,  # ms
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
@@ -129,38 +160,37 @@ skull_attenuation = 0.01*710 #conductivity of bone(S/m) * thickness of rat skull
 #Add extracellular stim
 for c,metype in enumerate(sim.net.cells):
     if 'presyn' not in metype.tags['pop']:
-        print("\n", metype.tags)
+        # print("\n", metype.tags)
         secList = [secs for secs in metype.secs.keys() if "pt3d" in metype.secs[secs]['geom']]
-        print(secList)
+        # print(secList)
         v_cell_ext, cell = make_extracellular_stimuli(acs_params, metype,secList)
 
 
 sim.runSim()                      			# run parallel Neuron simulation  
-
-for c,metype in enumerate(sim.net.cells):
-    if 'presyn' not in metype.tags['pop']:
-        print("\n", metype.tags)
-        metype.t_ext.clear()
-        metype.v_ext.clear()
-
 # Gather/save data option 1: standard
-sim.gatherData()                 			# gather spiking data and cell info from each node
+# sim.gatherData()                 			# gather spiking data and cell info from each node
 # Gather/save data option 2: distributed saving across nodes 
-# sim.saveDataInNodes()
-# sim.gatherDataFromFiles()
+sim.saveDataInNodes()
+sim.gatherDataFromFiles()
 sim.analysis.plotData()         			# plot spike raster etc
 
-# if sim.rank == 0:
-#     file_path = cfg.saveFolder+'/'+cfg.simLabel+'_node_data'
-#     print(file_path)
+if sim.rank == 0:
+    file_path = cfg.saveFolder+'/'+cfg.simLabel+'_node_data'
+    print(file_path)
 
-#     if os.path.exists(file_path):
-#         print("The files exist")
-#         filelist = os.listdir(file_path)
-#         for f in filelist:
-#             os.remove(os.path.join(file_path, f))
-#             print(f"The file {f} has been deleted.")
+    if os.path.exists(file_path):
+        print("The files exist")
+        filelist = os.listdir(file_path)
+        for f in filelist:
+            os.remove(os.path.join(file_path, f))
+            print(f"The file {f} has been deleted.")
 
 sim.saveData()
-sim.analysis.plotData()         			# plot spike raster etc
 
+pc = neuron.h.ParallelContext()  # use bulletin board master/slave
+pc.done()
+
+neuron.h.quit()
+
+import sys
+sys.exit(0)
