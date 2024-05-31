@@ -118,8 +118,8 @@ def make_extracellular_stimuli(acs_params, self, secList):
 # The parameters of the extracellular point current source
 acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
               'amp': 400.,  # uA,
-              'stimstart': 300,  # ms
-              'stimend': 500,  # ms
+              'stimstart': 2000,  # ms
+              'stimend': 4000,  # ms
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
@@ -129,9 +129,9 @@ skull_attenuation = 0.01*710 #conductivity of bone(S/m) * thickness of rat skull
 #Add extracellular stim
 for c,metype in enumerate(sim.net.cells):
     if 'presyn' not in metype.tags['pop']:
-        print("\n", metype.tags)
+        # print("\n", metype.tags)
         secList = [secs for secs in metype.secs.keys() if "pt3d" in metype.secs[secs]['geom']]
-        print(secList)
+        # print(secList)
         v_cell_ext, cell = make_extracellular_stimuli(acs_params, metype,secList)
 
 
@@ -139,7 +139,7 @@ sim.runSim()                      			# run parallel Neuron simulation
 
 for c,metype in enumerate(sim.net.cells):
     if 'presyn' not in metype.tags['pop']:
-        print("\n", metype.tags)
+        # print("\n", metype.tags)
         metype.t_ext.clear()
         metype.v_ext.clear()
 
@@ -148,7 +148,7 @@ sim.gatherData()                 			# gather spiking data and cell info from eac
 # Gather/save data option 2: distributed saving across nodes 
 # sim.saveDataInNodes()
 # sim.gatherDataFromFiles()
-sim.analysis.plotData()         			# plot spike raster etc
+# sim.analysis.plotData()         			# plot spike raster etc
 
 # if sim.rank == 0:
 #     file_path = cfg.saveFolder+'/'+cfg.simLabel+'_node_data'

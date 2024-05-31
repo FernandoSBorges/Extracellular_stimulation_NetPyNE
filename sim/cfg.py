@@ -26,9 +26,9 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 5.0*1e2 ## Duration of the sim, in ms  
-cfg.dt = 0.025
-cfg.seeds = {'conn': 4322, 'stim': 4322, 'loc': 4322} 
+cfg.duration = 6.0*1e3 ## Duration of the sim, in ms  
+cfg.dt = 0.05
+cfg.seeds = {'cell': 4322, 'conn': 4322, 'stim': 4322, 'loc': 4322} 
 cfg.hParams = {'celsius': 34, 'v_init': -65}  
 cfg.verbose = False
 cfg.createNEURONObj = True
@@ -50,8 +50,8 @@ cfg.rootFolder = os.getcwd()
 # Load cells info from previously saved using netpyne (False: load from HOC BBP files, slower)
 cfg.loadcellsfromJSON = True
 
-cfg.poptypeNumber = 61 # max 55 + 6
-cfg.celltypeNumber = 213 # max 207 + 6
+cfg.poptypeNumber = 55
+cfg.celltypeNumber = 207
 
 cfg.cao_secs = 1.2
 
@@ -132,7 +132,7 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype
 cfg.recordTraces = {'V_soma': {'sec':'soma', 'loc':0.5, 'var':'v'}}  ## Dict with traces to record
 cfg.recordStim = False			
 cfg.recordTime = False  		
-cfg.recordStep = 0.25           
+cfg.recordStep = 0.1           
 
 #------------------------------------------------------------------------------
 # Saving
@@ -168,7 +168,7 @@ cfg.scale = 1.0 # reduce size
 cfg.sizeY = 2082.0
 cfg.sizeX = 420.0 # r = 210 um and hexagonal side length = 230.9 um
 cfg.sizeZ = 420.0
-cfg.scaleDensity = 0.001 # Number of cells = 31346
+cfg.scaleDensity = 1.0 # Number of cells = 31346
 
 #------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
