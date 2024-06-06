@@ -1,8 +1,10 @@
-from neuron import h
 import os
 import sys
 
+# sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+
 def loadCell(cellName, cellTemplateName):
+    from neuron import h
     origDir = os.getcwd()
     os.chdir('WeiseEtAl2023/cells/'+cellName+'/')
     h.load_file("stdrun.hoc")
@@ -19,6 +21,7 @@ def loadCell(cellName, cellTemplateName):
     return cell
     
 def loadCell_Net(cellName, cellTemplateName):
+    from neuron import h
     origDir = os.getcwd()
     os.chdir('WeiseEtAl2023/cells/'+cellName+'/')
     h.load_file("stdrun.hoc")
@@ -41,26 +44,19 @@ def loadCell_Net(cellName, cellTemplateName):
     print (cell)
     os.chdir(origDir)
     return cell
+    
+def loadCell_L5_TTPC2_cADpyr(cellNumber):
 
-# from neuron import h
-# import os
+    from cellwrapperTMSlike import L5_TTPC2_cADpyr
 
-# h.load_file("stdrun.hoc")
-# h.load_file("import3d.hoc")    
-# os.chdir(rootFolder)
-# os.chdir('WeiseEtAl2023/')
-# # h.load_file("template.hoc")
-# h.load_file("nrngui.hoc")
-# h.load_file("interpCoordinates.hoc")
-# h.load_file("setPointers.hoc")
-# h.load_file("calcVe.hoc")
-# h.load_file("stimWaveform.hoc")
-# h.load_file("cellChooser.hoc")
-# h.load_file("setParams.hoc")
-# h.load_file("editMorphology.hoc")
-# os.chdir('cells/'+cellName+'/')
-# h.load_file("createsimulation.hoc")
-# # Instantiate the cell from the template
-# add_synapses=False
-# cell = getattr(h, cellTemplateName)(1 if add_synapses else 0)
-# print (cell)
+    # from neuron import h 
+
+    # h.load_file("stdrun.hoc")
+
+    cell = L5_TTPC2_cADpyr(cellNumber)
+    print(cell.loaded)
+
+    cell.load()
+    print(cell.loaded)
+    
+    return cell

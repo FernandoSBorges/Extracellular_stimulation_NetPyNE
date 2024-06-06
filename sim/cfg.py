@@ -104,30 +104,45 @@ cfg.S1cells = cellParam[0:207]
 cfg.popParamLabels = popParam
 cfg.cellParamLabels = cellParam
 
+
+Epops = ['L23_PC', 'L4_PC', 'L4_SS', 'L4_SP', 
+             'L5_TTPC1', 'L5_TTPC2', 'L5_STPC', 'L5_UTPC',
+             'L6_TPC_L1', 'L6_TPC_L4', 'L6_BPC', 'L6_IPC', 'L6_UTPC']
+
+cfg.Ecells = [] 
+for metype in cfg.S1cells: # metype      
+    mtype = cfg.popLabel[metype]            
+    if mtype in Epops:  
+        cfg.Ecells.append(metype)      
+
 #--------------------------------------------------------------------------
 # Recording 
 #--------------------------------------------------------------------------
 cfg.allpops = cfg.cellParamLabels
-cfg.cellsrec = 1
+cfg.cellsrec = 2
 if cfg.cellsrec == 0:  cfg.recordCells = cfg.allpops # record all cells
 elif cfg.cellsrec == 1: cfg.recordCells = [(pop,0) for pop in cfg.allpops] # record one cell of each pop
-elif cfg.cellsrec == 2: # record one cell of each cellMEtype 
+elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
     cfg.recordCells = []
     for metype in cfg.cellParamLabels:
-        if cfg.cellNumber[metype] < 5:
-            for numberME in range(cfg.cellNumber[metype]):
-                cfg.recordCells.append((metype,numberME))
-        else:
-            numberME = 0
-            diference = cfg.cellNumber[metype] - 5.0*int(cfg.cellNumber[metype]/5.0)
-            
-            for number in range(5):            
-                cfg.recordCells.append((metype,numberME))
+        if metype in cfg.Ecells:
+            if cfg.cellNumber[metype] < 5:
+                for numberME in range(cfg.cellNumber[metype]):
+                    cfg.recordCells.append((metype,numberME))
+            else:
+                numberME = 0
+                diference = cfg.cellNumber[metype] - 5.0*int(cfg.cellNumber[metype]/5.0)
                 
-                if number < diference:              
-                    numberME+=int(np.ceil(cfg.cellNumber[metype]/5.0))  
-                else:
-                    numberME+=int(cfg.cellNumber[metype]/5.0)
+                for number in range(5):            
+                    cfg.recordCells.append((metype,numberME))
+                    
+                    if number < diference:              
+                        numberME+=int(np.ceil(cfg.cellNumber[metype]/5.0))  
+                    else:
+                        numberME+=int(cfg.cellNumber[metype]/5.0)
+        else:
+            cfg.recordCells.append((metype,0))
+            cfg.recordCells.append((metype,1))
 
 cfg.recordTraces = {'V_soma': {'sec':'soma', 'loc':0.5, 'var':'v'}}  ## Dict with traces to record
 cfg.recordStim = False			
