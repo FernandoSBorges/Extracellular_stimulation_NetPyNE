@@ -1,0 +1,14 @@
+load_file("nrngui.hoc")
+load_file("import3d.hoc")
+
+begintemplate morphology_095997ce92
+public morphology
+
+proc morphology(){localobj nl,import
+          nl = new Import3d_Neurolucida3()
+          nl.quiet = 1
+          nl.input("h01_c3_3896803064_p1_sorted2.asc")
+          import = new Import3d_GUI(nl, 0)
+          import.instantiate($o1)
+          }
+endtemplate morphology_095997ce92

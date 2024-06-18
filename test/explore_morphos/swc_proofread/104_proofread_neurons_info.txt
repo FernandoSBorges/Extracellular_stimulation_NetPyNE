@@ -1,0 +1,208 @@
+2325998949
+#L1 #neuron #interneuron
+2530864375
+#L1 #neuron #interneuron
+4467761196
+#L1 #neuron #interneuron
+1787105373
+#L1 #neuron #interneuron #web-like-interneuron
+546925828
+#L2 #pyramidal #neuron
+547114083
+#L2 #pyramidal #neuron
+620880207
+#L2 #pyramidal #neuron
+751294744
+#L2 #pyramidal #neuron
+810151953
+#L2 #pyramidal #neuron
+810970127
+#L2 #pyramidal #neuron
+883843993
+#L2 #pyramidal #neuron
+955432427
+#L2 #pyramidal #neuron
+1072605926
+#L2 #pyramidal #neuron
+1304599410
+#L2 #pyramidal #neuron
+1465400601
+#L2 #pyramidal #neuron
+1684504313
+#L2 #pyramidal #neuron
+1874244336
+#L2 #pyramidal #neuron
+1930502394
+#L2 #pyramidal #neuron
+2047644309
+#L2 #pyramidal #neuron
+2195261734
+#L2 #pyramidal #neuron
+2252715458
+#L2 #pyramidal #neuron
+2848552900
+#L2 #pyramidal #neuron
+3111823553
+#L2 #pyramidal #neuron
+3432315514
+#L2 #pyramidal #neuron
+3519995546
+#L2 #pyramidal #neuron
+3812058320
+#L2 #pyramidal #neuron
+4365276903
+#L2 #pyramidal #neuron
+4437316933
+#L2 #pyramidal #neuron
+4554213569
+#L2 #pyramidal #neuron
+4932057570
+#L2 #pyramidal #neuron
+5136107765
+#L2 #pyramidal #neuron
+5355296383
+#L2 #pyramidal #neuron
+1830470325
+#L2 #pyramidal #neuron #bipolar
+1669770671
+#L2 #pyramidal #neuron #sparsely-spiny
+2820958695
+#L2 #neuron #interneuron
+3680152874
+#L2 #neuron #interneuron
+3751392341
+#L2 #neuron #interneuron
+4830551047
+#L2 #neuron #interneuron
+6126390733
+#L2 #neuron #interneuron
+678539249
+#L2 #neuron #interneuron #sparsely-spiny
+5805562981
+#L2 #neuron #interneuron #sparsely-spiny
+4641147055
+#L2 #neuron #excitatory/spiny-with-atypical-tree
+2103991145
+#L3 #pyramidal #neuron
+3329117097
+#L3 #pyramidal #neuron
+4188575291
+#L3 #pyramidal #neuron
+4582188328
+#L3 #pyramidal #neuron
+4711567524
+#L3 #pyramidal #neuron
+4873639924
+#L3 #pyramidal #neuron
+1900905433
+#L3 #neuron #interneuron
+2104047922
+#L3 #neuron #interneuron
+4260528559
+#L3 #neuron #interneuron
+4420044370
+#L3 #neuron #interneuron
+4711641825
+#L3 #neuron #interneuron
+5061320552
+#L3 #neuron #interneuron
+5965472721
+#L3 #neuron #interneuron
+2306214824
+#L4 #pyramidal #neuron
+2888180252
+#L4 #pyramidal #neuron
+3093748739
+#L4 #pyramidal #neuron
+3139317430
+#L4 #pyramidal #neuron
+3383650350
+#L4 #pyramidal #neuron
+3503540481
+#L4 #pyramidal #neuron
+3761379470
+#L4 #pyramidal #neuron
+3836078296
+#L4 #pyramidal #neuron
+3954491075
+#L4 #pyramidal #neuron
+3955003482
+#L4 #pyramidal #neuron
+4522237537
+#L4 #pyramidal #neuron
+4535129012
+#L4 #pyramidal #neuron
+4668874666
+#L4 #pyramidal #neuron
+5175880292
+#L4 #pyramidal #neuron
+5352961465
+#L4 #pyramidal #neuron
+5439194879
+#L4 #pyramidal #neuron
+5687162964
+#L4 #pyramidal #neuron
+5832764277
+#L4 #pyramidal #neuron
+2001418787
+#L4 #pyramidal #neuron #sparsely-spiny
+2074305737
+#L4 #pyramidal #neuron #sparsely-spiny
+2903686765
+#L4 #pyramidal #neuron #sparsely-spiny
+4010150634
+#L4 #pyramidal #neuron #sparsely-spiny
+2451406889
+#L4 #neuron #interneuron
+2889815798
+#L4 #neuron #interneuron
+5060444657
+#L4 #neuron #interneuron #web-like-interneuron #lot-of-axon
+4039221194
+#L5 #pyramidal #neuron
+4157825456
+#L5 #pyramidal #neuron
+4607885827
+#L5 #pyramidal #neuron
+3470629528
+#L5 #pyramidal #neuron #bipolar
+3571083397
+#L5 #pyramidal #neuron #bipolar
+5015035926
+#L5 #pyramidal #neuron #bipolar
+3178243558
+#L5 #pyramidal #neuron #sparsely-spiny
+4853956860
+#L5 #neuron #interneuron
+5584343344
+#L5 #neuron #interneuron
+4125702786
+#L5 #neuron #interneuron #sparsely-spiny
+4476359994
+#L5 #neuron #interneuron #sparsely-spiny
+5013648003
+#L5 #neuron #excitatory/spiny-with-atypical-tree
+5173982155
+#L5 #neuron #excitatory/spiny-with-atypical-tree
+4138580687
+#L5 #neuron #excitatory/spiny-with-atypical-tree #bipolar
+4197933517
+#L5 #neuron #excitatory/spiny-with-atypical-tree #bipolar
+6833911543
+#L5 #neuron #excitatory/spiny-with-atypical-tree #bipolar
+5319188363
+#L6 #pyramidal #neuron
+5654281423
+#L6 #pyramidal #neuron #bipolar
+5215113731
+#L6 #neuron #excitatory/spiny-with-atypical-tree
+5536146025
+#L6 #neuron #excitatory/spiny-with-atypical-tree
+5216806368
+#L6 #neuron #excitatory/spiny-with-atypical-tree #bipolar
+7052969349
+#WM #pyramidal #neuron
+7893125555
+#WM #pyramidal #neuron
+7196644737
+#WM #neuron #excitatory/spiny-with-atypical-tree #bipolar
