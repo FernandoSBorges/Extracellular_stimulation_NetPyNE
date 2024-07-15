@@ -117,6 +117,7 @@ def runneuron2(cellnumber):
 
         BBPTraces2.append(soma_voltage)
         BBPTracesList2.append(list(soma_voltage))
+        
     return BBPTraces2
 
 def runnetpyne(cellnumber):
