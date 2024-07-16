@@ -26,7 +26,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 500.0 ## Duration of the sim, in ms  
+cfg.duration = 5000.0 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'cell': 4322, 'conn': 4322, 'stim': 4322, 'loc': 4322} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
@@ -122,21 +122,20 @@ for metype in cfg.S1cells: # metype
     if mtype in Epops:  
         cfg.Ecells.append(metype)      
 
-# subPopLabels = ['L1_DAC','L1_DLAC', 'L1_HAC','L1_SLAC', #'L1_NGC_DA','L1_NGC_SA',
-#  'L23_PC','L23_MC','L23_SBC', 'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
-#  'L4_PC','L4_SBC','L4_MC','L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC','L4_SP','L4_SS',
-#  'L5_TTPC2','L5_SBC','L5_MC', 'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC','L5_STPC','L5_TTPC1','L5_UTPC',
-#  'L6_TPC_L4','L6_SBC','L6_MC','L6_BPC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_IPC','L6_LBC','L6_NBC','L6_NGC','L6_TPC_L1','L6_UTPC']
+subPopLabels = ['L1_DAC','L1_DLAC',# 'L1_HAC','L1_SLAC', #'L1_NGC_DA','L1_NGC_SA',
+ 'L23_PC','L23_MC','L23_SBC',# 'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
+ 'L4_PC','L4_SBC','L4_MC',#'L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC','L4_SP','L4_SS',
+ 'L5_TTPC2','L5_SBC','L5_MC',# 'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC','L5_STPC','L5_TTPC1','L5_UTPC',
+ 'L6_TPC_L4','L6_SBC','L6_MC'] #,'L6_BPC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_IPC','L6_LBC','L6_NBC','L6_NGC','L6_TPC_L1','L6_UTPC']
 
 # subPopLabels = cfg.S1pops[6:28] # from 0 to 55 is full S1 -> L1:6 L23:10 L4:12 L5:13 L6:14
-
 # subPopLabels = Epops[0:12]
 
-subPopLabels = ['L1_DAC',
- 'L23_PC','L23_SBC',
- 'L4_PC','L4_SBC',
- 'L5_TTPC2','L5_SBC', 
- 'L6_TPC_L4','L6_SBC']
+# subPopLabels = ['L1_DAC',
+#  'L23_PC','L23_SBC',
+#  'L4_PC','L4_SBC',
+#  'L5_TTPC2','L5_SBC', 
+#  'L6_TPC_L4','L6_SBC']
 
 #------------------------------------------------------------------------------  
 cfg.S1pops = subPopLabels
@@ -199,17 +198,17 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
 cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
                     'V_axon_0': {'sec':'axon_0', 'loc':0.5, 'var':'v'},
                     'V_Myelin_0': {'sec':'Myelin_0', 'loc':0.5, 'var':'v'},
-                    'V_Myelin_10': {'sec':'Myelin_10', 'loc':0.5, 'var':'v'},
+                    # 'V_Myelin_10': {'sec':'Myelin_10', 'loc':0.5, 'var':'v'},
                     'V_Node_0': {'sec':'Node_0', 'loc':0.5, 'var':'v'},
-                    'V_Node_10': {'sec':'Node_10', 'loc':0.5, 'var':'v'},
-                    'V_Unmyelin_0': {'sec':'Unmyelin_0', 'loc':0.5, 'var':'v'},
-                    'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
-                    'V_apic_0': {'sec':'apic_0', 'loc':0.5, 'var':'v'},
-                    'V_apic_5': {'sec':'apic_5', 'loc':0.5, 'var':'v'},
-                    'V_apic_95': {'sec':'apic_95', 'loc':0.5, 'var':'v'},                
-                    'V_dend_5': {'sec':'dend_5', 'loc':0.5, 'var':'v'},
-                    'V_dend_65': {'sec':'dend_65', 'loc':0.5, 'var':'v'},
-                    # 'V_dend_70': {'sec':'dend_70', 'loc':0.5, 'var':'v'},
+                    # 'V_Node_10': {'sec':'Node_10', 'loc':0.5, 'var':'v'},
+                    # 'V_Unmyelin_0': {'sec':'Unmyelin_0', 'loc':0.5, 'var':'v'},
+                    # 'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
+                    # 'V_apic_0': {'sec':'apic_0', 'loc':0.5, 'var':'v'},
+                    # 'V_apic_5': {'sec':'apic_5', 'loc':0.5, 'var':'v'},
+                    # 'V_apic_95': {'sec':'apic_95', 'loc':0.5, 'var':'v'},                
+                    # 'V_dend_5': {'sec':'dend_5', 'loc':0.5, 'var':'v'},
+                    # 'V_dend_65': {'sec':'dend_65', 'loc':0.5, 'var':'v'},
+                    'V_dend_0': {'sec':'dend_0', 'loc':0.5, 'var':'v'},
                     }
 
 cfg.recordStim = False			
@@ -219,7 +218,7 @@ cfg.recordStep = 0.1
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'v0_batch0'
+cfg.simLabel = 'tms_test_batch0'
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True         	## Save pkl file
@@ -233,8 +232,8 @@ cfg.saveCellConns = False
 #------------------------------------------------------------------------------
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
-cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (16,8), 'fontSize':12, 'lw': 11, 'markerSize':12, 'marker': '.', 'dpi': 300} 
-cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (12,12), 'fontSize':8}   # Plot 2D cells xy
+cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (24,24), 'fontSize':6, 'lw': 4, 'markerSize':4, 'marker': '.', 'dpi': 300} 
+cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (18,18), 'fontSize':8}   # Plot 2D cells xy
 cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', 'overlay': True, 'timeRange': [200,cfg.duration], 'saveFig': True, 'showFig': False, 'figSize':(18,12)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
 # cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (24,24), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':'../data/v5_batch0/v5_batch0_matrix_numConn.json', 'fontSize': 18}
@@ -267,8 +266,6 @@ else:
     cfg.sizeX = 420.0 # keep the original radius
     cfg.sizeZ = 420.0
 
-
-
 #------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
 #------------------------------------------------------------------------------
@@ -296,6 +293,8 @@ cfg.IEGain = 1.0
 # External Stimulation
 #------------------------------------------------------------------------------
 
+cfg.addExternalStimulation = False
+
 # The parameters of the extracellular point current source
 cfg.acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
               'amp': -1250.,  # uA,
@@ -304,3 +303,18 @@ cfg.acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
               'frequency': 5,  # Hz
               'sigma': 0.57  # decay constant S/m
               }
+
+cfg.tms_params = dict(
+    freq_Hz=30.,
+    duration_ms=cfg.duration,
+    pulse_resolution_ms=cfg.dt,
+    stim_start_ms=300.,
+    stim_end_ms=400.,
+    ef_amp_V_per_m=100.,
+    width_ms=1.,
+    pshape="Sine",
+    decay_rate_percent_per_mm=10,
+    E_field_dir=[-1, -1, -1],
+    decay_dir=[0, 0, -1],
+    ref_point_um=[0, 0, 0],
+)

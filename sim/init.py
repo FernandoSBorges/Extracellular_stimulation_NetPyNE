@@ -20,8 +20,9 @@ import numpy as np
 import os
 
 from stimulation import make_extracellular_stimuli
+from tms_tools import apply_tms
 
-
+tms = 1
 
 # cfg, netParams = sim.readCmdLineArgs(simConfigDefault='cfg.py', netParamsDefault='netParams.py')
 cfg, netParams = sim.readCmdLineArgs()
@@ -36,21 +37,32 @@ sim.net.addStims() 							# add network stimulation
 sim.setupRecording()              			# setup variables to record for each cell (spikes, V traces, etc)
 sim.net.defineCellShapes()
 
-#Add extracellular stim
-for c,metype in enumerate(sim.net.cells):
-    if metype.tags['cellModel'] == 'HH_full':
-        secList = [secs for secs in metype.secs.keys() if "pt3d" in metype.secs[secs]['geom']]
-        print("\n", metype.tags, "nsec =",len(secList))
-        # print(secList)
-        v_cell_ext, cell = make_extracellular_stimuli(cfg.acs_params, metype, secList)
+
+if cfg.addExternalStimulation:
+    if tms:
+        apply_tms(sim.net, **cfg.tms_params)
+    else:
+        #Add extracellular stim
+        for c,metype in enumerate(sim.net.cells):
+            if metype.tags['cellModel'] == 'HH_full':
+                secList = [secs for secs in metype.secs.keys() if "pt3d" in metype.secs[secs]['geom']]
+                print("\n", metype.tags, "nsec =",len(secList))
+                # print(secList)
+                v_cell_ext, cell = make_extracellular_stimuli(cfg.acs_params, metype, secList)
 
 sim.runSim()                      			# run parallel Neuron simulation  
 
-for c,metype in enumerate(sim.net.cells):
-    if metype.tags['cellModel'] == 'HH_full':
-        # print("\n", metype.tags)
-        metype.t_ext.clear()
-        metype.v_ext.clear()
+if cfg.addExternalStimulation:
+    if tms:
+        for cell in sim.net.cells:
+            cell.t_ext.clear()
+            cell.v_ext.clear()
+    else:
+        for c,metype in enumerate(sim.net.cells):
+            if metype.tags['cellModel'] == 'HH_full':
+                # print("\n", metype.tags)
+                metype.t_ext.clear()
+                metype.v_ext.clear()
 
 sim.gatherData()                 			# gather spiking data and cell info from each node
 sim.saveData()

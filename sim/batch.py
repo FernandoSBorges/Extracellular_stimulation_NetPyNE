@@ -15,9 +15,9 @@ import numpy as np
 def custom():
     params = specs.ODict()
     
-    params[('seeds', 'stim')] =  [1000]
+    # params[('seeds', 'stim')] =  [1000]
 
-    # params[('fracmorphoradius')] = [1.0/2.0]
+    params[('scaleDensity')] = [0.1, 1.0]
 
     b = Batch(params=params, netParamsFile='netParams.py', cfgFile='cfg.py')
 
@@ -62,8 +62,8 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '24:00:00',
-                    'nodes': 2,
+                    'walltime': '4:00:00',
+                    'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
                     'folder': '/home/fborges/Extracellular_stimulation_NetPyNE/sim/',
@@ -91,11 +91,11 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v0_batch3'  
-    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    b.batchLabel = 'v1_batch1'  
+    b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
-    b.saveFolder = '../data/'+b.batchLabel
+    # b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'mpi_direct')
+    setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
      

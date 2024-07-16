@@ -35,8 +35,7 @@ netParams.sizeX = cfg.sizeX # x-dimension (horizontal length) size in um
 netParams.sizeY = cfg.sizeY # y-dimension (vertical height or cortical depth) size in um
 netParams.sizeZ = cfg.sizeZ # z-dimension (horizontal depth) size in um
 netParams.shape = 'cylinder' # cylindrical (column-like) volume
-
-# Rat   
+   
 # Layer	height (um)	height (norma)	from	to
 # L1	165		    0.079		    0.000	0.079
 # L2	149		    0.072		    0.079	0.151
@@ -46,12 +45,6 @@ netParams.shape = 'cylinder' # cylindrical (column-like) volume
 # L6	700		    0.336		    0.664	1.000
 # L23	502		    0.241		    0.079	0.320
 # All	2082	    1.000	
-
-# L23 Human net
-# #              L2/3   L4     L5
-# PYRmaxApics = [550   ,1550   ,1900]
-# uppers =      [-250  ,-1200 ,-1600]
-# lowers =      [-1200 ,-1580 ,-2300]
 
 
 cellModels = ['HH_full']
@@ -596,8 +589,10 @@ if cfg.addStimSynS1:
 # Description
 #------------------------------------------------------------------------------
 netParams.description = """ 
-- Code based: S1 Rat NetPyNe model and Weiss 2024 paper 
-- v0 - include TMS and TACS with Aberra like cells
-- v1 - full collumn human like model with S1 reescaled net
-
+- Code based: M1 net, 6 layers, 7 cell types - v103
+- v0 - insert cell diversity
+- v1 - insert connection rules
+- v2 - insert phys conn parameters
+- v3 - ajust conn number
+- v4 - NetStim inputs to simulate Spontaneous synapses + background in S1 neurons - data from Rat
 """
