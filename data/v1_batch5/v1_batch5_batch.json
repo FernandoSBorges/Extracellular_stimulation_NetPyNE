@@ -1,0 +1,36 @@
+{
+    "batch": {
+        "batchLabel": "v1_batch5",
+        "cfgFile": "cfg.py",
+        "evolCfg": {
+            "fitnessFunc": "removed"
+        },
+        "initCfg": {},
+        "method": "grid",
+        "netParamsFile": "netParams.py",
+        "params": [
+            {
+                "label": "scaleDensity",
+                "values": [
+                    0.5
+                ]
+            }
+        ],
+        "runCfg": {
+            "allocation": "TG-IBN140002",
+            "coresPerNode": 128,
+            "custom": "#SBATCH --constraint=\"lustre\"\n#SBATCH --mem=1024G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared",
+            "email": "fernandodasilvaborges@gmail.com",
+            "folder": "/home/fborges/Extracellular_stimulation_NetPyNE/sim/",
+            "mpiCommand": "mpirun",
+            "nodes": 1,
+            "partition": "large-shared",
+            "script": "init.py",
+            "skip": true,
+            "type": "hpc_slurm",
+            "walltime": "23:00:00"
+        },
+        "saveFolder": "/expanse/lustre/projects/csd403/fborges/v1_batch5",
+        "seed": null
+    }
+}

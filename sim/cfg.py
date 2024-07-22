@@ -252,10 +252,18 @@ apic_diameter_scaling_factor = 1.876
 dend_diameter_scaling_factor = 1.946
 dend_length_scaling_factor = 1.17
 
+L25_human = 950 + 380 + 700
+L25_Rat = 502 + 190 + 525
+# print(L25_human,L25_Rat,L25_human/L25_Rat)
+print("Human_height",2082*L25_human/L25_Rat)
+Human_Rat_height_ratio = 1.668
+Human_height = 3472.85
+
 cfg.scale = 1.0 # reduce size
 cfg.sizeY = 2082.0*dend_length_scaling_factor
+cfg.sizeY = 3500.0
 
-cfg.scaleDensity = 0.01 # Number of cells = 31346 if 1.0
+cfg.scaleDensity = 0.5 # Number of cells = 31346 if 1.0
 
 cfg.keepdensity = True
 
@@ -308,9 +316,9 @@ cfg.tms_params = dict(
     freq_Hz=30.,
     duration_ms=cfg.duration,
     pulse_resolution_ms=cfg.dt,
-    stim_start_ms=300.,
-    stim_end_ms=400.,
-    ef_amp_V_per_m=100.,
+    stim_start_ms=2000.,
+    stim_end_ms=3000.,
+    ef_amp_V_per_m=60.,
     width_ms=1.,
     pshape="Sine",
     decay_rate_percent_per_mm=10,

@@ -17,7 +17,7 @@ def custom():
     
     # params[('seeds', 'stim')] =  [1000]
 
-    params[('scaleDensity')] = [0.1, 1.0]
+    params[('scaleDensity')] = [0.01]
 
     b = Batch(params=params, netParamsFile='netParams.py', cfgFile='cfg.py')
 
@@ -91,11 +91,11 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch1'  
-    b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    b.batchLabel = 'v1_batch2'  
+    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
-    # b.saveFolder = '../data/'+b.batchLabel
+    b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'mpi_direct')
     b.run() # run batch
      
