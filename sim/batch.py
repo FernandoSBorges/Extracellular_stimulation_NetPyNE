@@ -17,7 +17,7 @@ def custom():
     
     # params[('seeds', 'stim')] =  [1000]
 
-    params[('scaleDensity')] = [0.25, 0.5]
+    params[('addExternalStimulation')] = [0, 1]
 
     b = Batch(params=params, netParamsFile='netParams.py', cfgFile='cfg.py')
 
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
     # b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
+    # setRunCfg(b, 'mpi_direct')
     setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
      
