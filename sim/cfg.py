@@ -104,8 +104,8 @@ for line in mtype_content.split('\n')[:-1]:
     
     cellParam.append(mtype + '_' + etype[0:3])
     
-cfg.S1pops = popParam[0:6]
-cfg.S1cells = cellParam[0:14]
+cfg.S1pops = popParam[0:55]
+cfg.S1cells = cellParam[0:207]
 
 #------------------------------------------------------------------------------  
 cfg.popParamLabels = popParam
