@@ -26,7 +26,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 5000.0 ## Duration of the sim, in ms  
+cfg.duration = 1000.0 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'cell': 4322, 'conn': 4322, 'stim': 4322, 'loc': 4322} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
@@ -104,8 +104,8 @@ for line in mtype_content.split('\n')[:-1]:
     
     cellParam.append(mtype + '_' + etype[0:3])
     
-cfg.S1pops = popParam[0:55]
-cfg.S1cells = cellParam[0:207]
+cfg.S1pops = popParam[0:6]
+cfg.S1cells = cellParam[0:14]
 
 #------------------------------------------------------------------------------  
 cfg.popParamLabels = popParam
@@ -143,45 +143,46 @@ for metype in cfg.S1cells: # metype
 #  'L5_TTPC2','L5_STPC','L5_TTPC1','L5_UTPC','L5_SBC','L5_LBC','L5_MC', 
 #  'L6_TPC_L4','L6_TPC_L1','L6_UTPC','L6_IPC','L6_BPC','L6_SBC','L6_LBC','L6_MC'] 
 
-subPopLabels = ['L1_DAC','L1_DLAC',#'L1_HAC','L1_NGC_DA','L1_NGC_SA','L1_SLAC',
- 'L23_PC','L23_MC','L23_SBC', #'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
- 'L4_PC','L4_SBC','L4_MC', # 'L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC','L4_SP','L4_SS',
- 'L5_TTPC2','L5_SBC','L5_MC', #'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC','L5_STPC','L5_TTPC1','L5_UTPC',
- 'L6_TPC_L4','L6_SBC','L6_MC'] #,'L6_BPC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_IPC','L6_LBC','L6_NBC','L6_NGC','L6_TPC_L1','L6_UTPC']
+# subPopLabels = ['L1_DAC','L1_DLAC',#'L1_HAC','L1_NGC_DA','L1_NGC_SA','L1_SLAC',
+#  'L23_PC','L23_MC','L23_SBC', #'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
+#  'L4_PC','L4_SBC','L4_MC', # 'L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC','L4_SP','L4_SS',
+#  'L5_TTPC2','L5_SBC','L5_MC', #'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC','L5_STPC','L5_TTPC1','L5_UTPC',
+#  'L6_TPC_L4','L6_SBC','L6_MC'] #,'L6_BPC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_IPC','L6_LBC','L6_NBC','L6_NGC','L6_TPC_L1','L6_UTPC']
 
-#------------------------------------------------------------------------------  
-cfg.S1pops = subPopLabels
-cfg.S1cells = []
-for metype in cfg.cellParamLabels:
-    if cfg.popLabel[metype] in subPopLabels:        
-        cfg.S1cells.append(metype)
+# #------------------------------------------------------------------------------  
+# cfg.S1pops = subPopLabels
+# cfg.S1cells = []
+# for metype in cfg.cellParamLabels:
+#     if cfg.popLabel[metype] in subPopLabels:        
+#         cfg.S1cells.append(metype)
         
 cfg.thalamicpops = []
 
 cfg.popParamLabels = cfg.S1pops
 cfg.cellParamLabels = cfg.S1cells
 
-cfg.cellNumber[metype]
-cfg.popNumber[cfg.popLabel[metype]]
+# ------------------------------------------------------------------------------  
+# Change popNumber
+# ------------------------------------------------------------------------------  
+for metype in cfg.cellParamLabels:
+    # print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])           
+    cfg.cellNumber[metype] = 5
 
-#------------------------------------------------------------------------------  
+for mtype in cfg.popLabelEl.keys():
+    cfg.popNumber[mtype] = 0
+
+for mtype in cfg.popLabelEl.keys():
+    for metype in cfg.popLabelEl[mtype]:
+        cfg.popNumber[mtype] = cfg.popNumber[mtype] + cfg.cellNumber[metype]
+
 # for metype in cfg.cellParamLabels:
-#     print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])   
-    
-#------------------------------------------------------------------------------  
-## Change popNumber
-#------------------------------------------------------------------------------  
-# cfg.cellNumber[metype] = 25
-# cfg.popNumber[cfg.popLabel[metype]] = 25
-# #------------------------------------------------------------------------------  
-# for metype in cfg.cellParamLabels:
-#     print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])   
+#     print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])       
 
 #--------------------------------------------------------------------------
 # Recording 
 #--------------------------------------------------------------------------
 cfg.allpops = cfg.cellParamLabels
-cfg.cellsrec = 1
+cfg.cellsrec = 0
 if cfg.cellsrec == 0:  cfg.recordCells = cfg.allpops # record all cells
 elif cfg.cellsrec == 1: cfg.recordCells = [(pop,0) for pop in cfg.allpops] # record one cell of each pop
 elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
@@ -196,12 +197,12 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
 
 cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
                     'V_axon_0': {'sec':'axon_0', 'loc':0.5, 'var':'v'},
-                    'V_Myelin_0': {'sec':'Myelin_0', 'loc':0.5, 'var':'v'},
-                    'V_Myelin_10': {'sec':'Myelin_10', 'loc':0.5, 'var':'v'},
+                    # 'V_Myelin_0': {'sec':'Myelin_0', 'loc':0.5, 'var':'v'},
+                    # 'V_Myelin_10': {'sec':'Myelin_10', 'loc':0.5, 'var':'v'},
                     'V_Node_0': {'sec':'Node_0', 'loc':0.5, 'var':'v'},
                     'V_Node_10': {'sec':'Node_10', 'loc':0.5, 'var':'v'},
                     # 'V_Unmyelin_0': {'sec':'Unmyelin_0', 'loc':0.5, 'var':'v'},
-                    # 'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
+                    'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
                     # 'V_apic_0': {'sec':'apic_0', 'loc':0.5, 'var':'v'},
                     # 'V_apic_5': {'sec':'apic_5', 'loc':0.5, 'var':'v'},
                     # 'V_apic_95': {'sec':'apic_95', 'loc':0.5, 'var':'v'},                
@@ -262,7 +263,9 @@ cfg.scale = 1.0 # reduce size
 # cfg.sizeY = 2082.0*dend_length_scaling_factor
 cfg.sizeY = 3500.0
 
-cfg.scaleDensity = 0.5 # Number of cells = 31346 if 1.0
+# cfg.scaleDensity = 0.5 # Number of cells = 31346 if 1.0
+
+cfg.scaleDensity = 1.0 # Number of cells = 31346 if 1.0
 
 cfg.keepdensity = True
 
@@ -276,7 +279,7 @@ else:
 #------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
 #------------------------------------------------------------------------------
-cfg.addStimSynS1 = True
+cfg.addStimSynS1 = False
 cfg.rateStimE = 9.0
 cfg.rateStimI = 9.0
 
@@ -284,7 +287,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = True
+cfg.addConn = False
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -300,7 +303,7 @@ cfg.IEGain = 1.0
 # External Stimulation
 #------------------------------------------------------------------------------
 
-cfg.addExternalStimulation = True
+cfg.addExternalStimulation = False
 
 # The parameters of the extracellular point current source
 cfg.acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
@@ -325,3 +328,9 @@ cfg.tms_params = dict(
     decay_dir=[0, 0, -1],
     ref_point_um=[0, 0, 0],
 )
+
+#------------------------------------------------------------------------------
+# Current inputs 
+#------------------------------------------------------------------------------
+
+cfg.addIClamp = 1

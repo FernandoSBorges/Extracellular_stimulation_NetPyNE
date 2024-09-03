@@ -134,8 +134,8 @@ for cellName in cfg.S1cells:
     for morphoNumber in range(morphoNumbers):
         cellMe = cfg.cellLabel[cellName] + '_' + str(morphoNumber+1)
         
-        # netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cellMe + '_cellParams.json')  
-        netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cfg.cellLabel[cellName] + '_' + str(smaller_number_of_axon_sections[cellName]) + '_cellParams.json')  
+        netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cellMe + '_cellParams.json')  
+        # netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cfg.cellLabel[cellName] + '_' + str(smaller_number_of_axon_sections[cellName]) + '_cellParams.json')  
 
         netParams.cellParams[cellMe]['diversityFraction'] = cellFraction        
         netParams.cellParams[cellMe]['secLists']['spiny'] = [sec for sec in netParams.cellParams[cellMe]['secLists']['all'] if sec not in netParams.cellParams[cellMe]['secLists']['axonal']]
@@ -617,6 +617,21 @@ if cfg.addStimSynS1:
                 'weight': GsynStimI[post],
                 'delay': 0.1}
 
+#------------------------------------------------------------------------------
+# Current inputs (IClamp)
+#------------------------------------------------------------------------------
+if cfg.addIClamp:
+    for pop in Epops+Ipops:
+            
+        # add stim source
+        netParams.stimSourceParams['IClamp->' + pop] = {'type': 'IClamp', 'delay': 300.0, 'dur': 500.0, 'amp': 0.2}
+
+        # connect stim source to target
+        netParams.stimTargetParams['IClamp_'+pop] =  {
+                'source': 'IClamp->' + pop, 
+                'conds': {'cellType': cfg.popLabelEl[pop]},
+                'sec': 'soma_0', 
+                'loc': 0.5}
 
 #------------------------------------------------------------------------------
 # Description
