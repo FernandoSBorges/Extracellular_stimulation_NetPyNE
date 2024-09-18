@@ -36,23 +36,6 @@ netParams.sizeY = cfg.sizeY # y-dimension (vertical height or cortical depth) si
 netParams.sizeZ = cfg.sizeZ # z-dimension (horizontal depth) size in um
 netParams.shape = 'cylinder' # cylindrical (column-like) volume
 
-# Rat   
-# Layer	height (um)	height (norma)	from	to
-# L1	165		    0.079		    0.000	0.079
-# L2	149		    0.072		    0.079	0.151
-# L3	353		    0.170		    0.151	0.320
-# L4	190		    0.091		    0.320	0.412
-# L5	525		    0.252		    0.412	0.664
-# L6	700		    0.336		    0.664	1.000
-# L23	502		    0.241		    0.079	0.320
-# All	2082	    1.000	
-
-# L23 Human net
-# #              L2/3   L4     L5
-# PYRmaxApics = [550   ,1550   ,1900]
-# uppers =      [-250  ,-1200 ,-1600]
-# lowers =      [-1200 ,-1580 ,-2300]
-
 
 cellModels = ['HH_full']
 Epops = ['L23_PC', 'L4_PC', 'L4_SS', 'L4_SP', 
@@ -64,8 +47,16 @@ for popName in cfg.S1pops:
     if popName not in Epops:
         Ipops.append(popName)
 
-layer = {'1':[0.0, 0.079], '2': [0.079,0.151], '3': [0.151,0.320], '23': [0.079,0.320], '4':[0.320,0.412], '5': [0.412,0.664], '6': [0.664,1.0], 
-'longS1': [2.2,2.3], 'longS2': [2.3,2.4]}  # normalized layer boundaries
+layer = {'1':[0.0, 0.17431214670060], '2': [0.17431214670060,0.3037022055398974], '3': [0.3037022055398974,0.48032628269160704], 
+        '23': [0.17431214670060,0.48032628269160704], '4':[0.48032628269160704,0.6014535025371577], '5': [0.6014535025371577,0.7881702928423451], 
+        '6': [0.7881702928423451,1.0], 'longS1': [2.2,2.3], 'longS2': [2.3,2.4]}  # normalized layer boundaries
+
+#------------------------------------------------------------------------------  
+nodes_new = pd.read_csv('../data/cell_positions_h01_rotated.csv')
+
+nodesinfo = nodes_new[nodes_new['distance2Dcenter'] < cfg.cylinderRadius_h01]
+
+# print(np.unique(nodesinfo['layer'].values, return_counts=True) , np.unique(nodesinfo['mtype'].values, return_counts=True) , [(3200.929881191896 - max(nodesinfo[nodesinfo['layer']==ii]['y_new'].values))/(3200.929881191896-644.581391561247) for ii in [1,2,3,4,5,6]])
 
 #------------------------------------------------------------------------------
 # General connectivity parameters
@@ -78,24 +69,62 @@ netParams.scaleConnWeightNetStims = 0.001  # weight conversion factor (from nS t
 #------------------------------------------------------------------------------
 # Population parameters
 #------------------------------------------------------------------------------
-## S1
+number=0
+cfg.pyr_positions = {}
 
+for h01N, h01t in enumerate(['L1I', 'L23E', 'L23I', 'L4E', 'L4I', 'L5E', 'L5I', 'L6E', 'L6I']):
+
+    listPositions = list(nodesinfo[nodesinfo['mtype']==h01t].index)
+    np.random.seed(0)
+    shuffled_array = np.random.permutation(listPositions)
+    
+    gid1 = 0
+
+    for mtype in cfg.List_h01[h01t]: 
+
+        for cellEl in range(np.size(cfg.popLabelEl[mtype])):
+
+            metype = cfg.popLabelEl[mtype][cellEl]
+
+            try:
+                gid2 = gid1 + cfg.cellNumber_new[metype]
+                cfg.pyr_positions[metype] = [[float(nodesinfo['x_new'][gid]) , float(nodesinfo['y_new'][gid]) , float(nodesinfo['z_new'][gid])] for gid in shuffled_array[gid1:gid2]]
+                gid1 = gid1 + cfg.cellNumber_new[metype]
+            except:            
+                cfg.pyr_positions[metype] = []
+
+            number+=len(cfg.pyr_positions[metype])
+            # print(metype,len(cfg.pyr_positions[metype]))
+
+print('Cell Number =', number)
+
+# len(pyr_positions), len(cfg.S1cells)
+# # cellsList not working with 'diversity': True yet!!!
+# for cellName in cfg.S1cells:  
+#     cellsList = [{'x': x, 'y': y, 'z': z} for x,y,z in pyr_positions[cellName]]  
+#     netParams.popParams[cellName] = {'cellType': cellName, 'cellsList': cellsList, 'cellModel': 'HH_full', 'diversity': True}
+
+
+# ------------------------------------------------------------------------------
+# Population parameters
+# ------------------------------------------------------------------------------
 for cellName in cfg.S1cells:
 	layernumber = cellName[1:2]
 	if layernumber == '2':
 		netParams.popParams[cellName] = {'cellType': cellName, 'cellModel': 'HH_full', 'ynormRange': layer['23'], 
-                                        'numCells': int(np.ceil(cfg.scaleDensity*cfg.cellNumber[cellName])), 'diversity': True}
+                                        'numCells': int(np.ceil(cfg.scaleDensity*cfg.cellNumber_new[cellName])), 'diversity': True}
 	else:
 		netParams.popParams[cellName] = {'cellType': cellName, 'cellModel': 'HH_full', 'ynormRange': layer[layernumber], 
-                                        'numCells': int(np.ceil(cfg.scaleDensity*cfg.cellNumber[cellName])), 'diversity': True}
+                                        'numCells': int(np.ceil(cfg.scaleDensity*cfg.cellNumber_new[cellName])), 'diversity': True}
+
 
 #------------------------------------------------------------------------------
 # Cell parameters  # L1 70  L23 215  L4 230 L5 260  L6 260  = 1035
 #------------------------------------------------------------------------------
 ## S1 cell property rules
 
-smaller_number_of_axon_sections = {'L1_DAC_bNA': 2, 'L1_DAC_cNA': 1, 'L1_DLAC_cNA': 1, 'L1_HAC_bNA': 3, 'L1_HAC_cIR': 5, 'L1_HAC_cNA': 4, 'L1_NGC_DA_bNA': 3, 
-                                   'L1_NGC_DA_cAC': 3, 'L1_NGC_DA_cNA': 5, 'L1_NGC_DA_cST': 3, 'L1_NGC_SA_cNA': 4, 'L1_SLAC_bNA': 4, 'L1_SLAC_cAC': 1, 'L1_SLAC_cNA': 1, 
+smaller_number_of_axon_sections = {'L1_DAC_bNA': 2, 'L1_DAC_cNA': 1, 'L1_DLAC_cNA': 4, 'L1_HAC_bNA': 3, 'L1_HAC_cIR': 5, 'L1_HAC_cNA': 4, 'L1_NGC-DA_bNA': 3, 
+                                   'L1_NGC-DA_cAC': 3, 'L1_NGC-DA_cNA': 5, 'L1_NGC-DA_cST': 3, 'L1_NGC-SA_cNA': 4, 'L1_SLAC_bNA': 4, 'L1_SLAC_cAC': 1, 'L1_SLAC_cNA': 1, 
                                    'L23_BP_bAC': 1, 'L23_BP_bIR': 1, 'L23_BP_bNA': 2, 'L23_BP_cAC': 3, 'L23_BP_cNA': 2, 'L23_BP_dST': 1, 'L23_BTC_bAC': 5, 'L23_BTC_bIR': 5, 
                                    'L23_BTC_bNA': 5, 'L23_BTC_cAC': 5, 'L23_BTC_cNA': 5, 'L23_ChC_cAC': 4, 'L23_ChC_cNA': 3, 'L23_ChC_dNA': 3, 'L23_DBC_bAC': 1, 
                                    'L23_DBC_bIR': 1, 'L23_DBC_bNA': 5, 'L23_DBC_cAC': 5, 'L23_LBC_bAC': 3, 'L23_LBC_bNA': 3, 'L23_LBC_cAC': 3, 'L23_LBC_cNA': 4, 
@@ -133,15 +162,24 @@ for cellName in cfg.S1cells:
     
     for morphoNumber in range(morphoNumbers):
         cellMe = cfg.cellLabel[cellName] + '_' + str(morphoNumber+1)
-        
-        netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cellMe + '_cellParams.json')  
-        # netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cfg.cellLabel[cellName] + '_' + str(smaller_number_of_axon_sections[cellName]) + '_cellParams.json')  
+
+        if cellName in cfg.Ecells:
+            netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cellMe + '_cellParams.json')  
+        else:
+            netParams.loadCellParamsRule(label = cellMe, fileName = 'cells/' + cfg.cellLabel[cellName] + '_' + str(smaller_number_of_axon_sections[cellName]) + '_cellParams.json')  
 
         netParams.cellParams[cellMe]['diversityFraction'] = cellFraction        
         netParams.cellParams[cellMe]['secLists']['spiny'] = [sec for sec in netParams.cellParams[cellMe]['secLists']['all'] if sec not in netParams.cellParams[cellMe]['secLists']['axonal']]
         netParams.cellParams[cellMe]['secLists']['spinyEE'] = [sec for sec in netParams.cellParams[cellMe]['secLists']['spiny'] if sec not in netParams.cellParams[cellMe]['secLists']['somatic']]
         netParams.cellParams[cellMe]['conds']['cellType'] = cellName
         
+        # if 'StochKv' not in netParams.cellParams[cellMe]['secs']['soma_0']['mechs'] and len(netParams.cellParams[cellMe]['secLists']['axonal']) < 500:
+        #     print(cfg.cellLabel[cellName], 'cccc')
+        #     # print(cfg.cellLabel[cellName], '\t', len(netParams.cellParams[cellMe]['secLists']['axonal']))
+        # # else:
+        # #print(cfg.cellLabel[cellName] + '_' + str(smaller_number_of_axon_sections[cellName]) + '_cellParams.json')
+        # print(cellMe, '\t', len(netParams.cellParams[cellMe]['secLists']['axonal']))
+
         #-----------------------------------------------------------------------------------#
         if cfg.reducedtest:
             cellRule = {'conds': {'cellType': cellName}, 'diversityFraction': cellFraction, 'secs': {}}  # cell rule dict
@@ -325,26 +363,6 @@ NGFSynMech_Th  = ['GABAA_Th', 'GABAB_Th']
 # S1 Local connectivity parameters 
 #------------------------------------------------------------------------------
 
-#             if pre_new == 'L1_NGC_DA':
-#                 pre = 'L1_NGC-DA'
-#             else:
-#                 pre = pre_new
-
-#             if pre_new == 'L1_NGC_SA':
-#                 pre = 'L1_NGC-SA'
-#             else:
-#                 pre = pre_new
-
-#             if post_new == 'L1_NGC_DA':
-#                 post = 'L1_NGC-DA'
-#             else:
-#                 post = pre_new
-
-#             if post_new == 'L1_NGC_SA':
-#                 post = 'L1_NGC-SA'
-#             else:
-#                 post = pre_new
-
 contA = 0
 
 if cfg.addConn:    
@@ -401,6 +419,7 @@ if cfg.addConn:
                                         'delay': 'defaultDelay+dist_3D/propVelocity',
                                         'synsPerConn': int(synperconnNumber[pre][post]+0.5),
                                         'sec': 'spiny'}        
+                        
                 # ------------------------------------------------------------------------------
                 #  I -> E  # with ME conn diversity
                 # ------------------------------------------------------------------------------
@@ -624,7 +643,7 @@ if cfg.addIClamp:
     for pop in Epops+Ipops:
             
         # add stim source
-        netParams.stimSourceParams['IClamp->' + pop] = {'type': 'IClamp', 'delay': 300.0, 'dur': 500.0, 'amp': 0.2}
+        netParams.stimSourceParams['IClamp->' + pop] = {'type': 'IClamp', 'delay': 300.0, 'dur': 500.0, 'amp': cfg.IClamp_nA}
 
         # connect stim source to target
         netParams.stimTargetParams['IClamp_'+pop] =  {
@@ -639,6 +658,6 @@ if cfg.addIClamp:
 netParams.description = """ 
 - Code based: S1 Rat NetPyNe model and Weiss 2024 paper 
 - v0 - include TMS and TACS with Aberra like cells
-- v1 - full collumn human like model with S1 reescaled net
+- v1 - full collumn human like model (h01) with S1 reescaled cells
 
 """

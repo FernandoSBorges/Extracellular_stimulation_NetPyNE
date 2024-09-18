@@ -1,7 +1,7 @@
 """
 cfg.py 
 
-Simulation configuration for S1-thalamus model (using NetPyNE)
+Simulation configuration for human cortex model (using NetPyNE)
 This file has sim configs as well as specification for parameterized values in netParams.py 
 
 Contributors: salvadordura@gmail.com, fernandodasilvaborges@gmail.com
@@ -11,6 +11,7 @@ from netpyne import specs
 import pickle
 import os
 import numpy as np
+import pandas as pd
 
 cfg = specs.SimConfig()  
 
@@ -20,15 +21,15 @@ cfg = specs.SimConfig()
 #
 #------------------------------------------------------------------------------
 
-cfg.simType='S1_stim'
-cfg.coreneuron = False
+cfg.simType='h01_stim'
+cfg.coreneuron = True
 
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 1000.0 ## Duration of the sim, in ms  
+cfg.duration = 2000.0 ## Duration of the sim, in ms  
 cfg.dt = 0.05
-cfg.seeds = {'cell': 4322, 'conn': 4322, 'stim': 4322, 'loc': 4322} 
+cfg.seeds = {'cell': 4321, 'conn': 4321, 'stim': 4321, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
 cfg.verbose = False
 cfg.createNEURONObj = True
@@ -48,17 +49,13 @@ cfg.checkErrors = False
 # TO DEBUG - import and simulate only the Cell soma (to study only the Net)
 cfg.reducedtest = False    
 
-# TO DEBUG - Create only 5 Cells for each MEtype in S1
-cfg.oneCellperMEtypeS1 = False 
-
-
 cfg.rootFolder = os.getcwd()
 
 # Load cells info from previously saved using netpyne (False: load from HOC BBP files, slower)
 cfg.loadcellsfromJSON = True
 
 cfg.poptypeNumber = 55
-cfg.celltypeNumber = 207
+cfg.celltypeNumber = 134
 
 cfg.cao_secs = 1.2
 
@@ -69,6 +66,7 @@ cfg.use_frac['Inh'] = 0.50 # Pathways that had not been studied experimentally w
 cfg.use_frac['EE'] = 0.25 # steep Ca2+ dependence for connections between PC-PC and PC-distal targeting cell types (DBC, BTC, MC, BP)
 cfg.use_frac['EIdistal'] = 0.25 
 
+#------------------------------------------------------------------------------  
 #------------------------------------------------------------------------------  
 #------------------------------------------------------------------------------  
 # S1 Cells
@@ -103,80 +101,237 @@ for line in mtype_content.split('\n')[:-1]:
     cfg.popLabelEl[mtype].append(metype)
     
     cellParam.append(mtype + '_' + etype[0:3])
-    
-cfg.S1pops = popParam[0:55]
-cfg.S1cells = cellParam[0:207]
 
-#------------------------------------------------------------------------------  
+    # print(cellname, mtype, etype, n, m)
+    
+cfg.S1pops = popParam
+cfg.S1cells = cellParam
+
 cfg.popParamLabels = popParam
 cfg.cellParamLabels = cellParam
 
 
+#------------------------------------------------------------------------------  
 Epops = ['L23_PC', 'L4_PC', 'L4_SS', 'L4_SP', 
              'L5_TTPC1', 'L5_TTPC2', 'L5_STPC', 'L5_UTPC',
              'L6_TPC_L1', 'L6_TPC_L4', 'L6_BPC', 'L6_IPC', 'L6_UTPC']
 
 cfg.Ecells = [] 
-for metype in cfg.S1cells: # metype      
-    mtype = cfg.popLabel[metype]            
+cfg.h01_mtype = {}
+
+for metype in cfg.S1cells: # metype    
+
+    mtype = cfg.popLabel[metype]
+
+    if mtype[1] == '2':
+        layer = 'L23'      
+    else:
+        layer = mtype[0:2]         
+
     if mtype in Epops:  
+        cfg.h01_mtype[layer+'E'] = 0
         cfg.Ecells.append(metype)      
-
-# subPopLabels = ['L1_DAC','L1_DLAC', 'L1_HAC','L1_SLAC', #'L1_NGC_DA','L1_NGC_SA',
-#  'L23_PC','L23_MC','L23_SBC', 'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
-#  'L4_PC','L4_SP','L4_SS','L4_SBC','L4_MC','L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC',
-#  'L5_TTPC2','L5_STPC','L5_TTPC1','L5_UTPC','L5_SBC','L5_MC', 'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC',
-#  'L6_TPC_L4','L6_TPC_L1','L6_UTPC','L6_IPC','L6_BPC','L6_SBC','L6_MC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_LBC','L6_NBC','L6_NGC']
-
-# subPopLabels = cfg.S1pops[6:28] # from 0 to 55 is full S1 -> L1:6 L23:10 L4:12 L5:13 L6:14
-# subPopLabels = Epops[0:12]
-
-# subPopLabels = ['L1_DAC',
-#  'L23_PC','L23_SBC',
-#  'L4_PC','L4_SBC',
-#  'L5_TTPC2','L5_SBC', 
-#  'L6_TPC_L4','L6_SBC']
-
-# subPopLabels = ['L1_DAC','L1_DLAC',
-#  'L23_PC','L23_SBC','L23_LBC','L23_MC',
-#  'L4_PC','L4_SP','L4_SS','L4_SBC','L4_LBC','L4_MC',
-#  'L5_TTPC2','L5_STPC','L5_TTPC1','L5_UTPC','L5_SBC','L5_LBC','L5_MC', 
-#  'L6_TPC_L4','L6_TPC_L1','L6_UTPC','L6_IPC','L6_BPC','L6_SBC','L6_LBC','L6_MC'] 
-
-# subPopLabels = ['L1_DAC','L1_DLAC',#'L1_HAC','L1_NGC_DA','L1_NGC_SA','L1_SLAC',
-#  'L23_PC','L23_MC','L23_SBC', #'L23_BP','L23_BTC','L23_ChC','L23_DBC','L23_LBC','L23_NBC','L23_NGC',
-#  'L4_PC','L4_SBC','L4_MC', # 'L4_BP','L4_BTC','L4_ChC','L4_DBC','L4_LBC','L4_NBC','L4_NGC','L4_SP','L4_SS',
-#  'L5_TTPC2','L5_SBC','L5_MC', #'L5_BP','L5_BTC','L5_ChC','L5_DBC','L5_LBC','L5_NBC','L5_NGC','L5_STPC','L5_TTPC1','L5_UTPC',
-#  'L6_TPC_L4','L6_SBC','L6_MC'] #,'L6_BPC','L6_BP','L6_BTC','L6_ChC','L6_DBC','L6_IPC','L6_LBC','L6_NBC','L6_NGC','L6_TPC_L1','L6_UTPC']
-
-# #------------------------------------------------------------------------------  
-# cfg.S1pops = subPopLabels
-# cfg.S1cells = []
-# for metype in cfg.cellParamLabels:
-#     if cfg.popLabel[metype] in subPopLabels:        
-#         cfg.S1cells.append(metype)
+    else:
+        cfg.h01_mtype[layer+'I'] = 0
         
-cfg.thalamicpops = []
+for metype in cfg.S1cells: # metype    
 
-cfg.popParamLabels = cfg.S1pops
-cfg.cellParamLabels = cfg.S1cells
+    mtype = cfg.popLabel[metype]
 
-# ------------------------------------------------------------------------------  
-# Change popNumber
-# ------------------------------------------------------------------------------  
-for metype in cfg.cellParamLabels:
-    # print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])           
-    cfg.cellNumber[metype] = 5
+    if mtype[1] == '2':
+        layer = 'L23'      
+    else:
+        layer = mtype[0:2]         
 
-for mtype in cfg.popLabelEl.keys():
-    cfg.popNumber[mtype] = 0
+    if mtype in Epops:  
+        cfg.h01_mtype[layer+'E'] = cfg.h01_mtype[layer+'E'] + cfg.cellNumber[metype]
+    else:
+        cfg.h01_mtype[layer+'I'] = cfg.h01_mtype[layer+'I'] + cfg.cellNumber[metype]
+        
+#------------------------------------------------------------------------------
+# Network 
+#------------------------------------------------------------------------------
+# Aberra neuron model
+soma_area_scaling_factor = 2.453
+axon_diameter_scaling_factor = 2.453
+main_axon_diameter_scaling_factor = 1
+apic_diameter_scaling_factor = 1.876
+dend_diameter_scaling_factor = 1.946
+dend_length_scaling_factor = 1.17
 
-for mtype in cfg.popLabelEl.keys():
-    for metype in cfg.popLabelEl[mtype]:
-        cfg.popNumber[mtype] = cfg.popNumber[mtype] + cfg.cellNumber[metype]
+# h01 rotated
+Human_height = 2556.35
 
-# for metype in cfg.cellParamLabels:
-#     print(metype,cfg.cellNumber[metype],cfg.popLabel[metype],cfg.popNumber[cfg.popLabel[metype]])       
+cfg.cylinderRadius_h01 = 3000.0 # 
+
+cfg.scale = 1.0 # reduce size
+cfg.sizeX = 600.0 
+cfg.sizeY = 2556.35
+cfg.sizeZ = 600.0
+cfg.scaleDensity = 1.0 # Number of cells = 5527 if cfg.sizeZ = cfg.sizeX = 600.0 um
+
+
+#------------------------------------------------------------------------------  
+nodes_new = pd.read_csv('../data/cell_positions_h01_rotated.csv')
+
+h01type, h01Number = np.unique(nodes_new[nodes_new['distance2Dcenter'] < cfg.cylinderRadius_h01]['mtype'].values, return_counts=True)
+
+print(h01type, h01Number)
+
+cfg.h01_ratio_number = {}
+cfg.List_h01 = {}
+# print('layer','\t','h01','\t','S1','\t', "perc\n")
+for h01N, h01t in enumerate(['L1I', 'L23E', 'L23I', 'L4E', 'L4I', 'L5E', 'L5I', 'L6E', 'L6I']):
+    cfg.h01_ratio_number[h01t] = h01Number[h01N]/cfg.h01_mtype[h01t]
+    # print(h01t,'\t',h01Number[h01N],'\t',cfg.h01_mtype[h01t],'\t',"%.2f" % (100.0*cfg.h01_ratio_number[h01t]))
+    cfg.List_h01[h01t] = []
+
+for mtype in cfg.S1pops:
+
+    if mtype[1] == '2':
+        layer = 'L23'      
+    else:
+        layer = mtype[0:2]         
+
+    if mtype in Epops:    
+        h01t = layer+'E'
+    else:
+        h01t = layer+'I'    
+
+    cfg.List_h01[h01t].append(mtype)
+
+# cfg.List_h01
+
+#------------------------------------------------------------------------------  
+cfg.popNumber_new = {}
+number=0
+listnew = []
+
+for h01N, h01t in enumerate(['L1I', 'L23E', 'L23I', 'L4E', 'L4I', 'L5E', 'L5I', 'L6E', 'L6I']):
+# for h01t in cfg.List_h01.keys():
+    number=0
+    # print()
+
+    for mtype in cfg.List_h01[h01t]:
+
+        if mtype[1] == '2':
+            layer = 'L23'      
+        else:
+            layer = mtype[0:2]         
+
+
+        cfg.popNumber_new[mtype] = int(0.5 + cfg.popNumber[mtype] * cfg.h01_ratio_number[h01t]) 
+        
+        number+=cfg.popNumber_new[mtype]
+
+        # print(mtype, cfg.popNumber[mtype], cfg.popNumber_new[mtype], h01Number[h01N], number)
+        
+    cfg.popNumber_new[mtype] = cfg.popNumber_new[mtype] + h01Number[h01N] - number
+    number+= h01Number[h01N] - number
+
+    # print(" ",mtype, cfg.popNumber[mtype], cfg.popNumber_new[mtype], h01Number[h01N], number)
+
+#------------------------------------------------------------------------------  
+cfg.cellNumber_new = {}
+
+for mtype in cfg.S1pops:
+    # print()
+    number=0
+    for cellEl in range(min(np.size(cfg.popLabelEl[mtype]),cfg.popNumber_new[mtype])):
+
+        metype = cfg.popLabelEl[mtype][cellEl]
+
+        if cfg.popNumber_new[mtype] <= np.size(cfg.popLabelEl[mtype]):
+            cfg.cellNumber_new[metype] = int(1.0)
+        else:
+            cfg.cellNumber_new[metype] = int(0.5 + cfg.cellNumber[metype]*cfg.popNumber_new[mtype]/cfg.popNumber[mtype])
+
+        number+=cfg.cellNumber_new[metype]
+
+        # print(int(number), metype, cfg.cellNumber[metype], mtype, cfg.popNumber_new[mtype],cfg.cellNumber_new[metype])
+
+    cfg.cellNumber_new[metype] = cfg.cellNumber_new[metype] + cfg.popNumber_new[mtype] - number
+    # print(" ", int(number), metype, cfg.cellNumber[metype], mtype, cfg.popNumber_new[mtype],cfg.cellNumber_new[metype])
+
+    if cfg.cellNumber_new[metype] == 0:
+
+        if  cfg.cellNumber_new['L6_DBC_cAC'] == 2 and cfg.cellNumber_new['L6_DBC_cNA'] == 0:
+            print(" ########### \n fixing cellNumber_new = 0 for L6_DBC_cNA")
+            cfg.cellNumber_new['L6_DBC_cAC'] = 1
+            cfg.cellNumber_new['L6_DBC_cNA'] = 1
+            print(" ", int(number), metype, cfg.cellNumber[metype], mtype, cfg.popNumber_new[mtype],cfg.cellNumber_new[metype])
+
+        if cfg.cellNumber_new[metype] == 0:
+            print("fix this like above")
+            break
+#------------------------------------------------------------------------------  
+number=0
+for mtype in cfg.S1pops:
+    for cellEl in range(np.size(cfg.popLabelEl[mtype])):
+
+        metype = cfg.popLabelEl[mtype][cellEl]
+
+        try:
+            number+=cfg.cellNumber_new[metype]
+        except:
+            print(metype, "not inclued for this size")
+
+print('Cell Number =', number)
+
+
+cfg.popLabelEl = {} 
+for metype in cfg.cellNumber_new.keys():
+
+    mtype = cfg.popLabel[metype] 
+
+    if mtype not in cfg.popLabelEl.keys():
+        cfg.popLabelEl[mtype] = [] 
+               
+    cfg.popLabelEl[mtype].append(metype)
+    
+
+number=0
+for mtype in cfg.S1pops:
+    for cellEl in range(np.size(cfg.popLabelEl[mtype])):
+
+        metype = cfg.popLabelEl[mtype][cellEl]
+
+        try:
+            number+=cfg.cellNumber_new[metype]
+        except:
+            print(metype, "not inclued for this size")
+
+print('Cell Number =', number)
+
+#--------------------------------------------------------------------------
+cfg.S1pops = list(cfg.popNumber_new.keys())
+cfg.S1cells = list(cfg.cellNumber_new.keys())
+
+cfg.popParamLabels = list(cfg.popNumber_new.keys())
+cfg.cellParamLabels = list(cfg.cellNumber_new.keys())
+
+#--------------------------------------------------------------------------
+
+# TO DEBUG - Create only 5 Cells for each MEtype
+cfg.oneCellperMEtypeS1 = False 
+
+#------------------------------------------------------------------------------  
+# TO DEBUG - Create only one Cell per MEtype
+if cfg.oneCellperMEtypeS1:
+    cfg.popNumber_new = {}
+    for mtype in cfg.S1pops:
+        cfg.popNumber_new[mtype] = 0
+
+    for metype in cfg.cellNumber_new.keys():
+
+        mtype = cfg.popLabel[metype] 
+
+        if mtype in Epops:
+            cfg.popNumber_new[mtype] = cfg.popNumber_new[mtype] + 5
+            cfg.cellNumber_new[metype] = 5
+        else:
+            cfg.popNumber_new[mtype] = cfg.popNumber_new[mtype] + 1
+            cfg.cellNumber_new[metype] = 1
 
 #--------------------------------------------------------------------------
 # Recording 
@@ -196,19 +351,19 @@ elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
             cfg.recordCells.append((metype,1))
 
 cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
-                    'V_axon_0': {'sec':'axon_0', 'loc':0.5, 'var':'v'},
+                    # 'V_axon_0': {'sec':'axon_0', 'loc':0.5, 'var':'v'},
                     # 'V_Myelin_0': {'sec':'Myelin_0', 'loc':0.5, 'var':'v'},
                     # 'V_Myelin_10': {'sec':'Myelin_10', 'loc':0.5, 'var':'v'},
-                    'V_Node_0': {'sec':'Node_0', 'loc':0.5, 'var':'v'},
-                    'V_Node_10': {'sec':'Node_10', 'loc':0.5, 'var':'v'},
+                    # 'V_Node_0': {'sec':'Node_0', 'loc':0.5, 'var':'v'},
+                    # 'V_Node_10': {'sec':'Node_10', 'loc':0.5, 'var':'v'},
                     # 'V_Unmyelin_0': {'sec':'Unmyelin_0', 'loc':0.5, 'var':'v'},
-                    'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
+                    # 'V_Unmyelin_10': {'sec':'Unmyelin_10', 'loc':0.5, 'var':'v'},
                     # 'V_apic_0': {'sec':'apic_0', 'loc':0.5, 'var':'v'},
                     # 'V_apic_5': {'sec':'apic_5', 'loc':0.5, 'var':'v'},
                     # 'V_apic_95': {'sec':'apic_95', 'loc':0.5, 'var':'v'},                
                     # 'V_dend_5': {'sec':'dend_5', 'loc':0.5, 'var':'v'},
                     # 'V_dend_65': {'sec':'dend_65', 'loc':0.5, 'var':'v'},
-                    'V_dend_10': {'sec':'dend_10', 'loc':0.5, 'var':'v'},
+                    # 'V_dend_10': {'sec':'dend_10', 'loc':0.5, 'var':'v'},
                     }
 
 cfg.recordStim = False			
@@ -218,7 +373,7 @@ cfg.recordStep = 0.1
 #------------------------------------------------------------------------------
 # Saving
 #------------------------------------------------------------------------------
-cfg.simLabel = 'tms_test_batch0'
+cfg.simLabel = 'v0_batch0'
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
 cfg.savePickle = True         	## Save pkl file
@@ -227,59 +382,24 @@ cfg.saveDataInclude = ['simData', 'simConfig', 'netParams', 'net'] ## , 'simConf
 cfg.backupCfgFile = None 		##  
 cfg.gatherOnlySimData = False	##  
 cfg.saveCellSecs = False			
-cfg.saveCellConns = False	
+cfg.saveCellConns = True	
 
 #------------------------------------------------------------------------------
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
-cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (24,24), 'fontSize':6, 'lw': 4, 'markerSize':4, 'marker': '.', 'dpi': 300} 
-cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (18,18), 'fontSize':8}   # Plot 2D cells xy
+cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (12,12), 'fontSize':12, 'lw': 8, 'markerSize':8, 'marker': '.', 'dpi': 300} 
+cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (18,36), 'fontSize':8}   # Plot 2D cells xy
 cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', 'overlay': True, 'timeRange': [0,cfg.duration], 'saveFig': True, 'showFig': False, 'figSize':(18,12)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
-# cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (24,24), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':'../data/v5_batch0/v5_batch0_matrix_numConn.json', 'fontSize': 18}
-# cfg.analysis['plotConn'] = {'includePre': ['L1_DAC_cNA','L23_MC_cAC','L4_SS_cAD','L4_NBC_cNA','L5_TTPC2_cAD', 'L5_LBC_cNA', 'L6_TPC_L4_cAD', 'L6_LBC_cNA', 'ss_RTN_o', 'ss_RTN_m', 'ss_RTN_i', 'VPL_sTC', 'VPM_sTC', 'POm_sTC_s1'], 'includePost': ['L1_DAC_cNA','L23_MC_cAC','L4_SS_cAD','L4_NBC_cNA','L5_TTPC2_cAD', 'L5_LBC_cNA', 'L6_TPC_L4_cAD', 'L6_LBC_cNA', 'ss_RTN_o', 'ss_RTN_m', 'ss_RTN_i', 'VPL_sTC', 'VPM_sTC', 'POm_sTC_s1'], 'feature': 'convergence', 'groupBy': 'pop', 'figSize': (24,24), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'fontSize': 18}
+cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (48,48), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':True, 'fontSize': 18}
 # cfg.analysis['plot2Dnet']   = {'include': ['L5_LBC', 'VPM_sTC', 'POm_sTC_s1'], 'saveFig': True, 'showConns': True, 'figSize': (24,24), 'fontSize':16}   # Plot 2D net cells and connections
 # cfg.analysis['plotShape'] = {'includePre': cfg.recordCells, 'includePost': cfg.recordCells, 'showFig': False, 'includeAxon': False, 
                             # 'showSyns': False, 'saveFig': True, 'dist': 0.55, 'cvar': 'voltage', 'figSize': (24,12), 'dpi': 600}
 
 #------------------------------------------------------------------------------
-# Network 
-#------------------------------------------------------------------------------
-soma_area_scaling_factor = 2.453
-axon_diameter_scaling_factor = 2.453
-main_axon_diameter_scaling_factor = 1
-apic_diameter_scaling_factor = 1.876
-dend_diameter_scaling_factor = 1.946
-dend_length_scaling_factor = 1.17
-
-L25_human = 950 + 380 + 700
-L25_Rat = 502 + 190 + 525
-# print(L25_human,L25_Rat,L25_human/L25_Rat)
-# print("Human_height",2082*L25_human/L25_Rat)
-Human_Rat_height_ratio = 1.668
-Human_height = 3472.85
-
-cfg.scale = 1.0 # reduce size
-# cfg.sizeY = 2082.0*dend_length_scaling_factor
-cfg.sizeY = 3500.0
-
-# cfg.scaleDensity = 0.5 # Number of cells = 31346 if 1.0
-
-cfg.scaleDensity = 1.0 # Number of cells = 31346 if 1.0
-
-cfg.keepdensity = True
-
-if cfg.keepdensity:
-    cfg.sizeX = 420.0*np.sqrt(cfg.scaleDensity) # r = 210 um and hexagonal side length = 230.9 um -> 
-    cfg.sizeZ = 420.0*np.sqrt(cfg.scaleDensity)
-else:
-    cfg.sizeX = 420.0 # keep the original radius
-    cfg.sizeZ = 420.0
-
-#------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
 #------------------------------------------------------------------------------
-cfg.addStimSynS1 = False
+cfg.addStimSynS1 = True
 cfg.rateStimE = 9.0
 cfg.rateStimI = 9.0
 
@@ -287,7 +407,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = False
+cfg.addConn = True
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -333,4 +453,5 @@ cfg.tms_params = dict(
 # Current inputs 
 #------------------------------------------------------------------------------
 
-cfg.addIClamp = 1
+cfg.addIClamp = False
+cfg.IClamp_nA = 0.2

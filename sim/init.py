@@ -32,6 +32,32 @@ sim.initialize(
     netParams = netParams)  				# create network object and set cfg and net params
 sim.net.createPops()               			# instantiate network populations
 sim.net.createCells()              			# instantiate network cells based on defined populations
+
+for i,metype in enumerate(sim.net.cells):
+
+    if 'presyn' not in metype.tags['pop']:
+
+        ii = int(0.000001+(metype.tags['fraction']/(1/cfg.cellNumber_new[metype.tags['pop']])))  
+
+        metype.tags['xnorm'] = cfg.pyr_positions[metype.tags['pop']][ii][0]/cfg.sizeX
+        metype.tags['ynorm'] = (3200.929881191896 - cfg.pyr_positions[metype.tags['pop']][ii][1])/cfg.sizeY
+        metype.tags['znorm'] = cfg.pyr_positions[metype.tags['pop']][ii][2]/cfg.sizeZ
+        metype.tags['x'] = cfg.pyr_positions[metype.tags['pop']][ii][0]
+        metype.tags['y'] = 3200.929881191896 - cfg.pyr_positions[metype.tags['pop']][ii][1]
+        metype.tags['z'] = cfg.pyr_positions[metype.tags['pop']][ii][2]   
+
+    else: # include external cells as vecStims # not implemented yet
+        
+        ii = int(metype.tags['cellLabel'])      
+
+        metype.tags['xnorm'] = cfg.pyr_positions[metype.tags['pop']][ii][0]/cfg.sizeX
+        metype.tags['ynorm'] = (3200.929881191896 - cfg.pyr_positions[metype.tags['pop']][ii][1])/cfg.sizeY
+        metype.tags['znorm'] = cfg.pyr_positions[metype.tags['pop']][ii][2]/cfg.sizeZ
+        metype.tags['x'] = cfg.pyr_positions[metype.tags['pop']][ii][0]
+        metype.tags['y'] = 3200.929881191896 - cfg.pyr_positions[metype.tags['pop']][ii][1]
+        metype.tags['z'] = cfg.pyr_positions[metype.tags['pop']][ii][2]   
+
+
 sim.net.connectCells()            			# create connections between cells based on params
 sim.net.addStims() 							# add network stimulation
 sim.setupRecording()              			# setup variables to record for each cell (spikes, V traces, etc)

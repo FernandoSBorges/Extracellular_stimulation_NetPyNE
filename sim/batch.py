@@ -16,8 +16,9 @@ def custom():
     params = specs.ODict()
     
     # params[('seeds', 'stim')] =  [1000]
+    # params[('addExternalStimulation')] = [0]
 
-    params[('addExternalStimulation')] = [0]
+    params[('IClamp_nA')] = [0.8]
 
     b = Batch(params=params, netParamsFile='netParams.py', cfgFile='cfg.py')
 
@@ -34,14 +35,14 @@ def setRunCfg(b, type='mpi_bulletin'):
 
     elif type=='mpi_direct':
         b.runCfg = {'type': 'mpi_direct',
-            'cores': 5,
+            'cores': 12,
             'script': 'init.py',
             'mpiCommand': 'mpiexec', # --use-hwthread-cpus
             'skip': True}
 
     elif type=='mpi_direct2':
         b.runCfg = {'type': 'mpi_direct',
-            'mpiCommand': 'mpirun -n 80 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
+            'mpiCommand': 'mpirun -n 12 ./x86_64/special -mpi -python init.py', # --use-hwthread-cpus
             'skip': True}
 
     elif type == 'hpc_slurm_Expanse_debug':
@@ -91,12 +92,12 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v0_batch1'  
-    b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    b.batchLabel = 'v1_batch0'  
+    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
-    # b.saveFolder = '../data/'+b.batchLabel
+    b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
-    # setRunCfg(b, 'mpi_direct')
-    setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'mpi_direct')
+    # setRunCfg(b, 'hpc_slurm_Expanse')
     b.run() # run batch
      
