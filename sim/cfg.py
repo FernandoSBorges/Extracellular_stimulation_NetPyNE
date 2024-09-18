@@ -22,7 +22,7 @@ cfg = specs.SimConfig()
 #------------------------------------------------------------------------------
 
 cfg.simType='h01_stim'
-cfg.coreneuron = True
+cfg.coreneuron = False
 
 #------------------------------------------------------------------------------
 # Run parameters
@@ -162,7 +162,7 @@ dend_length_scaling_factor = 1.17
 # h01 rotated
 Human_height = 2556.35
 
-cfg.cylinderRadius_h01 = 3000.0 # 
+cfg.cylinderRadius_h01 = 300.0 # 
 
 cfg.scale = 1.0 # reduce size
 cfg.sizeX = 600.0 
@@ -176,7 +176,7 @@ nodes_new = pd.read_csv('../data/cell_positions_h01_rotated.csv')
 
 h01type, h01Number = np.unique(nodes_new[nodes_new['distance2Dcenter'] < cfg.cylinderRadius_h01]['mtype'].values, return_counts=True)
 
-print(h01type, h01Number)
+print("Cell Number per layer for h01 considering all cells in a cylinder of Radius_um =",cfg.cylinderRadius_h01,h01type, h01Number)
 
 cfg.h01_ratio_number = {}
 cfg.List_h01 = {}
@@ -255,11 +255,12 @@ for mtype in cfg.S1pops:
 
     if cfg.cellNumber_new[metype] == 0:
 
-        if  cfg.cellNumber_new['L6_DBC_cAC'] == 2 and cfg.cellNumber_new['L6_DBC_cNA'] == 0:
-            print(" ########### \n fixing cellNumber_new = 0 for L6_DBC_cNA")
-            cfg.cellNumber_new['L6_DBC_cAC'] = 1
-            cfg.cellNumber_new['L6_DBC_cNA'] = 1
-            print(" ", int(number), metype, cfg.cellNumber[metype], mtype, cfg.popNumber_new[mtype],cfg.cellNumber_new[metype])
+        if 'L6_DBC_cAC' in cfg.cellNumber_new.keys():
+            if  cfg.cellNumber_new['L6_DBC_cAC'] == 2 and cfg.cellNumber_new['L6_DBC_cNA'] == 0:
+                print(" ########### \n fixing cellNumber_new = 0 for L6_DBC_cNA")
+                cfg.cellNumber_new['L6_DBC_cAC'] = 1
+                cfg.cellNumber_new['L6_DBC_cNA'] = 1
+                print(" ", int(number), metype, cfg.cellNumber[metype], mtype, cfg.popNumber_new[mtype],cfg.cellNumber_new[metype])
 
         if cfg.cellNumber_new[metype] == 0:
             print("fix this like above")
@@ -276,7 +277,7 @@ for mtype in cfg.S1pops:
         except:
             print(metype, "not inclued for this size")
 
-print('Cell Number =', number)
+# print('Cell Number =', number)
 
 
 cfg.popLabelEl = {} 
@@ -301,7 +302,7 @@ for mtype in cfg.S1pops:
         except:
             print(metype, "not inclued for this size")
 
-print('Cell Number =', number)
+# print('Cell Number =', number)
 
 #--------------------------------------------------------------------------
 cfg.S1pops = list(cfg.popNumber_new.keys())
@@ -382,16 +383,16 @@ cfg.saveDataInclude = ['simData', 'simConfig', 'netParams', 'net'] ## , 'simConf
 cfg.backupCfgFile = None 		##  
 cfg.gatherOnlySimData = False	##  
 cfg.saveCellSecs = False			
-cfg.saveCellConns = True	
+cfg.saveCellConns = False	
 
 #------------------------------------------------------------------------------
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
 cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (12,12), 'fontSize':12, 'lw': 8, 'markerSize':8, 'marker': '.', 'dpi': 300} 
-cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (18,36), 'fontSize':8}   # Plot 2D cells xy
+cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (12,18), 'fontSize':8}   # Plot 2D cells xy
 cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', 'overlay': True, 'timeRange': [0,cfg.duration], 'saveFig': True, 'showFig': False, 'figSize':(18,12)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
-cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (48,48), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':True, 'fontSize': 18}
+# cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (48,48), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':True, 'fontSize': 18}
 # cfg.analysis['plot2Dnet']   = {'include': ['L5_LBC', 'VPM_sTC', 'POm_sTC_s1'], 'saveFig': True, 'showConns': True, 'figSize': (24,24), 'fontSize':16}   # Plot 2D net cells and connections
 # cfg.analysis['plotShape'] = {'includePre': cfg.recordCells, 'includePost': cfg.recordCells, 'showFig': False, 'includeAxon': False, 
                             # 'showSyns': False, 'saveFig': True, 'dist': 0.55, 'cvar': 'voltage', 'figSize': (24,12), 'dpi': 600}
