@@ -338,18 +338,27 @@ if cfg.oneCellperMEtypeS1:
 # Recording 
 #--------------------------------------------------------------------------
 cfg.allpops = cfg.cellParamLabels
-cfg.cellsrec = 0
+cfg.cellsrec = 2
 if cfg.cellsrec == 0:  cfg.recordCells = cfg.allpops # record all cells
 elif cfg.cellsrec == 1: cfg.recordCells = [(pop,0) for pop in cfg.allpops] # record one cell of each pop
 elif cfg.cellsrec == 2: # record one cell of each cellMEtype for Epops
     cfg.recordCells = []
     for metype in cfg.cellParamLabels:
-        if metype in cfg.Ecells:
-            for numberME in range(5):
-                cfg.recordCells.append((metype,numberME))
-        else:
+        if metype not in cfg.Ecells:
             cfg.recordCells.append((metype,0))
             cfg.recordCells.append((metype,1))
+        else:
+            numberME = 0
+            diference = cfg.cellNumber_new[metype] - 5.0*int(cfg.cellNumber_new[metype]/5.0)
+            
+            for number in range(5):            
+                cfg.recordCells.append((metype,numberME))
+                
+                if number < diference:              
+                    numberME+=int(np.ceil(cfg.cellNumber_new[metype]/5.0))  
+                else:
+                    numberME+=int(cfg.cellNumber_new[metype]/5.0)
+
 
 cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
                     # 'V_axon_0': {'sec':'axon_0', 'loc':0.5, 'var':'v'},
