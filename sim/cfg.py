@@ -28,7 +28,7 @@ cfg.coreneuron = False
 # Run parameters
 #------------------------------------------------------------------------------
 cfg.duration = 500.0 ## Duration of the sim, in ms  
-cfg.dt = 0.025
+cfg.dt = 0.01
 cfg.seeds = {'cell': 4321, 'conn': 4321, 'stim': 4321, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
 cfg.verbose = False
@@ -378,7 +378,7 @@ cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
 
 cfg.recordStim = False			
 cfg.recordTime = False  		
-cfg.recordStep = 0.1           
+cfg.recordStep = 0.01           
 
 #------------------------------------------------------------------------------
 # Saving
@@ -448,10 +448,10 @@ cfg.tms_params = dict(
     freq_Hz=30.,
     duration_ms=cfg.duration,
     pulse_resolution_ms=cfg.dt,
-    stim_start_ms=200.,
-    stim_end_ms=300.,
+    stim_start_ms=400.,
+    stim_end_ms=500.,
     ef_amp_V_per_m=60.,
-    width_ms=1.,
+    width_ms=0.1,
     pshape="Sine",
     decay_rate_percent_per_mm=10,
     E_field_dir=[-1, -1, -1],
