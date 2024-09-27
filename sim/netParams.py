@@ -47,16 +47,17 @@ for popName in cfg.S1pops:
     if popName not in Epops:
         Ipops.append(popName)
 
-layer = {'1':[0.0, 0.17431214670060], '2': [0.17431214670060,0.3037022055398974], '3': [0.3037022055398974,0.48032628269160704], 
-        '23': [0.17431214670060,0.48032628269160704], '4':[0.48032628269160704,0.6014535025371577], '5': [0.6014535025371577,0.7881702928423451], 
-        '6': [0.7881702928423451,1.0], 'longS1': [2.2,2.3], 'longS2': [2.3,2.4]}  # normalized layer boundaries
+layer = {'1':[0.0, 0.18993098680007983], '2': [0.18993098680007983,0.3192496317490944], '3': [0.3192496317490944,0.4957762252719994], 
+        '23': [0.18993098680007983,0.4957762252719994], '4':[0.4957762252719994,0.6168365917126917], '5': [0.6168365917126917,0.8034503279463661], 
+        '6': [0.8034503279463661,1.0], 'longS1': [2.2,2.3], 'longS2': [2.3,2.4]}  # normalized layer boundaries
 
 #------------------------------------------------------------------------------  
 nodes_new = pd.read_csv('../data/cell_positions_h01_rotated.csv')
 
 nodesinfo = nodes_new[nodes_new['distance2Dcenter'] < cfg.cylinderRadius_h01]
 
-# print(np.unique(nodesinfo['layer'].values, return_counts=True) , np.unique(nodesinfo['mtype'].values, return_counts=True) , [(3200.929881191896 - max(nodesinfo[nodesinfo['layer']==ii]['y_new'].values))/(3200.929881191896-644.581391561247) for ii in [1,2,3,4,5,6]])
+print(np.unique(nodesinfo['layer'].values, return_counts=True) , np.unique(nodesinfo['mtype'].values, return_counts=True) , [(3241.1252045639344 - max(nodesinfo[nodesinfo['layer']==ii]['y_new'].values))/(3241.1252045639344-683.3650175664178) for ii in [1,2,3,4,5,6]])
+print(max(nodesinfo[nodesinfo['layer']==1]['y_new'].values), min(nodesinfo[nodesinfo['layer']==6]['y_new'].values), max(nodesinfo[nodesinfo['layer']==1]['y_new'].values)-  min(nodesinfo[nodesinfo['layer']==6]['y_new'].values))
 
 #------------------------------------------------------------------------------
 # General connectivity parameters
@@ -643,7 +644,7 @@ if cfg.addIClamp:
     for pop in Epops+Ipops:
             
         # add stim source
-        netParams.stimSourceParams['IClamp->' + pop] = {'type': 'IClamp', 'delay': 300.0, 'dur': 500.0, 'amp': cfg.IClamp_nA}
+        netParams.stimSourceParams['IClamp->' + pop] = {'type': 'IClamp', 'delay': 300.0, 'dur': 1000.0, 'amp': cfg.IClamp_nA}
 
         # connect stim source to target
         netParams.stimTargetParams['IClamp_'+pop] =  {

@@ -27,8 +27,8 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 2000.0 ## Duration of the sim, in ms  
-cfg.dt = 0.05
+cfg.duration = 500.0 ## Duration of the sim, in ms  
+cfg.dt = 0.025
 cfg.seeds = {'cell': 4321, 'conn': 4321, 'stim': 4321, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
 cfg.verbose = False
@@ -159,14 +159,14 @@ apic_diameter_scaling_factor = 1.876
 dend_diameter_scaling_factor = 1.946
 dend_length_scaling_factor = 1.17
 
-# h01 rotated
+# h01 L1-L6 rotated
 Human_height = 2556.35
 
 cfg.cylinderRadius_h01 = 300.0 # 
 
 cfg.scale = 1.0 # reduce size
 cfg.sizeX = 600.0 
-cfg.sizeY = 2556.35
+cfg.sizeY = 3200.00
 cfg.sizeZ = 600.0
 cfg.scaleDensity = 1.0 # Number of cells = 5527 if cfg.sizeZ = cfg.sizeX = 600.0 um
 
@@ -314,7 +314,7 @@ cfg.cellParamLabels = list(cfg.cellNumber_new.keys())
 #--------------------------------------------------------------------------
 
 # TO DEBUG - Create only 5 Cells for each MEtype
-cfg.oneCellperMEtypeS1 = False 
+cfg.oneCellperMEtypeS1 = True 
 
 #------------------------------------------------------------------------------  
 # TO DEBUG - Create only one Cell per MEtype
@@ -409,7 +409,7 @@ cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', '
 #------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
 #------------------------------------------------------------------------------
-cfg.addStimSynS1 = True
+cfg.addStimSynS1 = False
 cfg.rateStimE = 9.0
 cfg.rateStimI = 9.0
 
@@ -417,7 +417,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = True
+cfg.addConn = False
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -433,7 +433,7 @@ cfg.IEGain = 1.0
 # External Stimulation
 #------------------------------------------------------------------------------
 
-cfg.addExternalStimulation = False
+cfg.addExternalStimulation = True
 
 # The parameters of the extracellular point current source
 cfg.acs_params = {'position': [0.0, -1710.0, 0.0],  # um # y = [pia, bone]
@@ -448,9 +448,9 @@ cfg.tms_params = dict(
     freq_Hz=30.,
     duration_ms=cfg.duration,
     pulse_resolution_ms=cfg.dt,
-    stim_start_ms=2000.,
-    stim_end_ms=3000.,
-    ef_amp_V_per_m=80.,
+    stim_start_ms=200.,
+    stim_end_ms=300.,
+    ef_amp_V_per_m=60.,
     width_ms=1.,
     pshape="Sine",
     decay_rate_percent_per_mm=10,
@@ -464,4 +464,4 @@ cfg.tms_params = dict(
 #------------------------------------------------------------------------------
 
 cfg.addIClamp = False
-cfg.IClamp_nA = 0.2
+cfg.IClamp_nA = 0.310

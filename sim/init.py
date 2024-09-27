@@ -22,7 +22,7 @@ import os
 from stimulation import make_extracellular_stimuli
 from tms_tools import apply_tms
 
-tms = 1
+tms = True
 
 # cfg, netParams = sim.readCmdLineArgs(simConfigDefault='cfg.py', netParamsDefault='netParams.py')
 cfg, netParams = sim.readCmdLineArgs()
