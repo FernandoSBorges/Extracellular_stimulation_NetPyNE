@@ -27,8 +27,8 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 500.0 ## Duration of the sim, in ms  
-cfg.dt = 0.01
+cfg.duration = 5000.0 ## Duration of the sim, in ms  
+cfg.dt = 0.05
 cfg.seeds = {'cell': 4321, 'conn': 4321, 'stim': 4321, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
 cfg.verbose = False
@@ -314,7 +314,7 @@ cfg.cellParamLabels = list(cfg.cellNumber_new.keys())
 #--------------------------------------------------------------------------
 
 # TO DEBUG - Create only 5 Cells for each MEtype
-cfg.oneCellperMEtypeS1 = True 
+cfg.oneCellperMEtypeS1 = False 
 
 #------------------------------------------------------------------------------  
 # TO DEBUG - Create only one Cell per MEtype
@@ -378,7 +378,7 @@ cfg.recordTraces = {'V_soma': {'sec':'soma_0', 'loc':0.5, 'var':'v'},
 
 cfg.recordStim = False			
 cfg.recordTime = False  		
-cfg.recordStep = 0.01           
+cfg.recordStep = 0.05           
 
 #------------------------------------------------------------------------------
 # Saving
@@ -386,9 +386,9 @@ cfg.recordStep = 0.01
 cfg.simLabel = 'v0_batch0'
 cfg.saveFolder = '../data/'+cfg.simLabel
 # cfg.filename =                	## Set file output name
-cfg.savePickle = True         	## Save pkl file
+cfg.savePickle = False         	## Save pkl file
 cfg.saveJson = False	           	## Save json file
-cfg.saveDataInclude = ['simData', 'simConfig', 'netParams', 'net'] ## , 'simConfig', 'netParams'
+cfg.saveDataInclude = ['simConfig'] # ['simData', 'simConfig', 'netParams', 'net'] ## , 'simConfig', 'netParams'
 cfg.backupCfgFile = None 		##  
 cfg.gatherOnlySimData = False	##  
 cfg.saveCellSecs = False			
@@ -397,9 +397,9 @@ cfg.saveCellConns = False
 #------------------------------------------------------------------------------
 # Analysis and plotting 
 # ------------------------------------------------------------------------------
-cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (12,12), 'fontSize':12, 'lw': 8, 'markerSize':8, 'marker': '.', 'dpi': 300} 
+cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': False, 'orderInverse': True, 'timeRange': [0.0,cfg.duration], 'saveData': True, 'figSize': (24,24), 'fontSize':12, 'lw': 8, 'markerSize':8, 'marker': '.', 'dpi': 300} 
 cfg.analysis['plot2Dnet']   = {'include': cfg.allpops, 'saveFig': True, 'showConns': False, 'figSize': (12,18), 'fontSize':8}   # Plot 2D cells xy
-cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', 'overlay': True, 'timeRange': [0,cfg.duration], 'saveFig': True, 'showFig': False, 'figSize':(18,12)}
+cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'trace', 'overlay': True, 'timeRange': [0.0,cfg.duration], 'saveData': True, 'saveFig': True, 'showFig': False, 'figSize':(18,12)}
 # cfg.analysis['plot2Dfiring']={'saveFig': True, 'figSize': (24,24), 'fontSize':16}
 # cfg.analysis['plotConn'] = {'includePre': cfg.allpops, 'includePost': cfg.allpops, 'feature': 'numConns', 'groupBy': 'pop', 'figSize': (48,48), 'saveFig': True, 'orderBy': 'gid', 'graphType': 'matrix', 'saveData':True, 'fontSize': 18}
 # cfg.analysis['plot2Dnet']   = {'include': ['L5_LBC', 'VPM_sTC', 'POm_sTC_s1'], 'saveFig': True, 'showConns': True, 'figSize': (24,24), 'fontSize':16}   # Plot 2D net cells and connections
@@ -409,7 +409,7 @@ cfg.analysis['plotTraces'] = {'include': cfg.recordCells, 'oneFigPer': 'cell', '
 #------------------------------------------------------------------------------
 # Spontaneous synapses + background - data from Rat
 #------------------------------------------------------------------------------
-cfg.addStimSynS1 = False
+cfg.addStimSynS1 = True
 cfg.rateStimE = 9.0
 cfg.rateStimI = 9.0
 
@@ -417,7 +417,7 @@ cfg.rateStimI = 9.0
 # Connectivity
 #------------------------------------------------------------------------------
 ## S1->S1
-cfg.addConn = False
+cfg.addConn = True
 
 cfg.synWeightFractionEE = [1.0, 1.0] # E -> E AMPA to NMDA ratio
 cfg.synWeightFractionEI = [1.0, 1.0] # E -> I AMPA to NMDA ratio
@@ -448,10 +448,10 @@ cfg.tms_params = dict(
     freq_Hz=30.,
     duration_ms=cfg.duration,
     pulse_resolution_ms=cfg.dt,
-    stim_start_ms=400.,
-    stim_end_ms=500.,
+    stim_start_ms=2000.,
+    stim_end_ms=3000.,
     ef_amp_V_per_m=60.,
-    width_ms=0.1,
+    width_ms=1.0,
     pshape="Sine",
     decay_rate_percent_per_mm=10,
     E_field_dir=[-1, -1, -1],

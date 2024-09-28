@@ -17,7 +17,7 @@ def custom():
     
     # params[('seeds', 'stim')] =  [4321]
 
-    params[('tms_params', 'ef_amp_V_per_m')] =  [340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0]    
+    params[('tms_params', 'ef_amp_V_per_m')] =  [40.0, 60.0, 80.0, 100.0] 
 
     # params[('cylinderRadius_h01')] = [300.0]
 
@@ -64,7 +64,7 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '4:00:00',
+                    'walltime': '24:00:00',
                     'nodes': 1,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
@@ -93,13 +93,13 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch6'  
-    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
-    b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
+    b.batchLabel = 'v1_batch3'  
+    b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
     # b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
     # setRunCfg(b, 'mpi_direct')
-    # setRunCfg(b, 'hpc_slurm_Expanse')
-    setRunCfg(b, 'hpc_slurm_jsc')
+    setRunCfg(b, 'hpc_slurm_Expanse')
+    # setRunCfg(b, 'hpc_slurm_jsc')
     b.run() # run batch
      
