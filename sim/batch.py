@@ -17,7 +17,7 @@ def custom():
     
     # params[('seeds', 'stim')] =  [4321]
 
-    params[('tms_params', 'ef_amp_V_per_m')] =  [40.0, 60.0, 80.0, 100.0] 
+    params[('tms_params', 'ef_amp_V_per_m')] =  [40.0, 60.0] 
 
     # params[('cylinderRadius_h01')] = [300.0]
 
@@ -64,8 +64,8 @@ def setRunCfg(b, type='mpi_bulletin'):
         b.runCfg = {'type': 'hpc_slurm',
                     'allocation': 'TG-IBN140002',
                     'partition': 'large-shared',
-                    'walltime': '24:00:00',
-                    'nodes': 1,
+                    'walltime': '9:00:00',
+                    'nodes': 4,
                     'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
                     'folder': '/home/fborges/Extracellular_stimulation_NetPyNE/sim/',
@@ -93,7 +93,7 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch3'  
+    b.batchLabel = 'v1_batch5'  
     b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
     # b.saveFolder = '../data/'+b.batchLabel

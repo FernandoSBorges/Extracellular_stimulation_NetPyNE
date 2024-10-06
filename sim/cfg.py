@@ -27,7 +27,7 @@ cfg.coreneuron = False
 #------------------------------------------------------------------------------
 # Run parameters
 #------------------------------------------------------------------------------
-cfg.duration = 5000.0 ## Duration of the sim, in ms  
+cfg.duration = 3000.0 ## Duration of the sim, in ms  
 cfg.dt = 0.05
 cfg.seeds = {'cell': 4321, 'conn': 4321, 'stim': 4321, 'loc': 4321} 
 cfg.hParams = {'celsius': 34, 'v_init': -71}  
@@ -162,7 +162,7 @@ dend_length_scaling_factor = 1.17
 # h01 L1-L6 rotated
 Human_height = 2556.35
 
-cfg.cylinderRadius_h01 = 300.0 # 
+cfg.cylinderRadius_h01 = 3000.0 # 
 
 cfg.scale = 1.0 # reduce size
 cfg.sizeX = 600.0 
