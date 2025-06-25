@@ -74,17 +74,17 @@ def setRunCfg(b, type='mpi_bulletin'):
                     'custom': '#SBATCH --constraint="lustre"\n#SBATCH --mem=1024G\n#SBATCH --export=ALL\n#SBATCH --partition=large-shared',
                     'skip': True}
 
-    elif type == 'hpc_slurm_jsc':
+    elif type == 'hpc_slurm_perlmutter':
         b.runCfg = {'type': 'hpc_slurm',
-                    'allocation': 'icei-hbp-00000000006',
-                    'walltime': '1:00:00',
-                    'nodes': 1,
-                    'coresPerNode': 64,
+                    'allocation': 'm5051',
+                    'walltime': '4:00:00',
+                    'nodes': 8,
+                    'coresPerNode': 128,
                     'email': 'fernandodasilvaborges@gmail.com',
-                    'folder': '/p/home/jusers/borges1/jusuf/Extracellular_stimulation_NetPyNE/sim/',
+                    'folder': '/global/homes/f/fsborges/Extracellular_stimulation_NetPyNE/sim/',
                     'script': 'init.py',
                     'mpiCommand': 'srun',
-                    'custom': '#SBATCH --account=icei-hbp-00000000006',
+                    'custom': '#SBATCH --constraint=cpu\n#SBATCH --mem=1024G\n#SBATCH --export=ALL\n#SBATCH --qos=shared',
                     'skip': True}
 
 # ----------------------------------------------------------------------------------------------
@@ -93,13 +93,13 @@ def setRunCfg(b, type='mpi_bulletin'):
 if __name__ == '__main__': 
     b = custom() #
 
-    b.batchLabel = 'v1_batch5'  
-    b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
+    b.batchLabel = 'v1_batch6'  
+    # b.saveFolder = '/expanse/lustre/projects/csd403/fborges/'+b.batchLabel
     # b.saveFolder = '/p/project/icei-hbp-00000000006/borges1/'+b.batchLabel
-    # b.saveFolder = '../data/'+b.batchLabel
+    b.saveFolder = '../data/'+b.batchLabel
     b.method = 'grid'
     # setRunCfg(b, 'mpi_direct')
-    setRunCfg(b, 'hpc_slurm_Expanse')
-    # setRunCfg(b, 'hpc_slurm_jsc')
+    # setRunCfg(b, 'hpc_slurm_Expanse')
+    setRunCfg(b, 'hpc_slurm_perlmutter')
     b.run() # run batch
      
